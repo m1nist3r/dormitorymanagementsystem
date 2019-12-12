@@ -3,6 +3,8 @@ package dormitorymanagementsystem.model.resident;
 import dormitorymanagementsystem.util.DBUtil;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import org.jetbrains.annotations.NotNull;
+
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
@@ -11,14 +13,31 @@ public class ResidentDAO {
     //*******************************
     //SELECT specific Residents (Search by First + Last name)
     //*******************************
+    @NotNull
     public static ObservableList<Resident> searchResidents(String resFLName) throws SQLException {
-        return searchResidents();
+        //Declare a SELECT statement
+        String selectStmt = "SELECT * FROM resident WHERE first_name LIKE ? OR last_name LIKE ?";
+
+        //Execute SELECT statement
+        try {
+            //Get ResultSet from dbExecuteQuery method
+            ResultSet rsRes = DBUtil.dbExecutePreparedQuery(selectStmt, resFLName, resFLName);
+
+            //Send ResultSet to the getResidentFromResultSet method and get resident object
+            //Return resident object
+            return getResidentList(rsRes);
+        } catch (SQLException e) {
+            System.out.println("While searching an residents an error occurred: " + e.getMessage());
+            //Return exception
+            throw e;
+        }
     }
 
     //*******************************
     //SELECT all Residents
     //*******************************
-    private static ObservableList<Resident> searchResidents() throws SQLException {
+    @NotNull
+    public static ObservableList<Resident> searchResidents() throws SQLException {
         //Declare a SELECT statement
         String selectStmt = "SELECT * FROM resident";
 
@@ -38,7 +57,8 @@ public class ResidentDAO {
     }
 
     //Use ResultSet from DB as parameter and set Resident Object's attributes and return resident object.
-    private static ObservableList<Resident> getResidentList(ResultSet rs) throws SQLException {
+    @NotNull
+    private static ObservableList<Resident> getResidentList(@NotNull ResultSet rs) throws SQLException {
     //Declare a observable List which comprises of Resident objects
         ObservableList<Resident> resList = FXCollections.observableArrayList();
 
@@ -46,14 +66,13 @@ public class ResidentDAO {
             Resident res = new Resident();
             res.setResidentTypeId(rs.getInt("ID_TYPE"));
             res.setResidentTypeId(rs.getInt("ID_ROOM"));
-            res.setFatherName(rs.getString("FIRST_NAME"));
+            res.setFirstName(rs.getString("FIRST_NAME"));
             res.setLastName(rs.getString("LAST_NAME"));
-            res.setPassportNumber(rs.getString("PASSPORT_NUMBER"));
             res.setPesel(rs.getString("PESEL"));
             res.setGender(rs.getString("GENDER"));
             res.setDobDate(rs.getDate("DOB"));
-            res.setMotherName(rs.getString("MOTHER_NAME"));
-            res.setFatherName(rs.getString("FATHER_NAME"));
+            res.setMotherName(rs.getString("MOTHERS_NAME"));
+            res.setFatherName(rs.getString("FATHERS_NAME"));
             res.setEmail(rs.getString("EMAIL"));
             res.setCountry(rs.getString("COUNTRY"));
             res.setAddress(rs.getString("ADDRESS"));

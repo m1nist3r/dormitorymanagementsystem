@@ -6,11 +6,11 @@ import java.util.Date;
 
 public class Resident {
     //Declare Residents Table Columns
+    private IntegerProperty residentId;
     private IntegerProperty residentTypeId;
     private IntegerProperty residentRoomId;
     private StringProperty firstName;
     private StringProperty lastName;
-    private StringProperty passportNumber;
     private StringProperty pesel;
     private StringProperty gender;
     private SimpleObjectProperty<Date> dobDate;
@@ -26,12 +26,11 @@ public class Resident {
 
     //Constructor
     Resident() {
+        this.residentId = new SimpleIntegerProperty();
         this.residentTypeId = new SimpleIntegerProperty();
         this.residentRoomId = new SimpleIntegerProperty();
         this.firstName = new SimpleStringProperty();
         this.lastName = new SimpleStringProperty();
-        this.passportNumber = new SimpleStringProperty();
-        this.passportNumber = new SimpleStringProperty();
         this.pesel = new SimpleStringProperty();
         this.gender = new SimpleStringProperty();
         this.dobDate = new SimpleObjectProperty<>();
@@ -55,7 +54,7 @@ public class Resident {
         return residentTypeId;
     }
 
-    public void setResidentTypeId(int residentTypeId) {
+    void setResidentTypeId(int residentTypeId) {
         this.residentTypeId.set(residentTypeId);
     }
 
@@ -68,7 +67,7 @@ public class Resident {
         return firstName;
     }
 
-    public void setFirstName(String firstName) {
+    void setFirstName(String firstName) {
         this.firstName.set(firstName);
     }
 
@@ -81,21 +80,8 @@ public class Resident {
         return lastName;
     }
 
-    public void setLastName(String lastName) {
+    void setLastName(String lastName) {
         this.lastName.set(lastName);
-    }
-
-    //passport_number
-    public String getPassportNumber() {
-        return passportNumber.get();
-    }
-
-    public StringProperty passportNumberProperty() {
-        return passportNumber;
-    }
-
-    public void setPassportNumber(String passportNumber) {
-        this.passportNumber.set(passportNumber);
     }
 
     //pesel
@@ -107,7 +93,7 @@ public class Resident {
         return pesel;
     }
 
-    public void setPesel(String pesel) {
+    void setPesel(String pesel) {
         this.pesel.set(pesel);
     }
 
@@ -120,7 +106,7 @@ public class Resident {
         return gender;
     }
 
-    public void setGender(String gender) {
+    void setGender(String gender) {
         this.gender.set(gender);
     }
 
@@ -133,7 +119,7 @@ public class Resident {
         return dobDate;
     }
 
-    public void setDobDate(Date dobDate) {
+    void setDobDate(Date dobDate) {
         this.dobDate.set(dobDate);
     }
 
@@ -146,7 +132,7 @@ public class Resident {
         return motherName;
     }
 
-    public void setMotherName(String motherName) {
+    void setMotherName(String motherName) {
         this.motherName.set(motherName);
     }
 
@@ -159,7 +145,7 @@ public class Resident {
         return fatherName;
     }
 
-    public void setFatherName(String fatherName) {
+    void setFatherName(String fatherName) {
         this.fatherName.set(fatherName);
     }
 
@@ -172,7 +158,7 @@ public class Resident {
         return email;
     }
 
-    public void setEmail(String email) {
+    void setEmail(String email) {
         this.email.set(email);
     }
 
@@ -185,7 +171,7 @@ public class Resident {
         return country;
     }
 
-    public void setCountry(String country) {
+    void setCountry(String country) {
         this.country.set(country);
     }
 
@@ -198,7 +184,7 @@ public class Resident {
         return address;
     }
 
-    public void setAddress(String address) {
+    void setAddress(String address) {
         this.address.set(address);
     }
 
@@ -211,7 +197,7 @@ public class Resident {
         return phoneNumber;
     }
 
-    public void setPhoneNumber(String phoneNumber) {
+    void setPhoneNumber(String phoneNumber) {
         this.phoneNumber.set(phoneNumber);
     }
 
@@ -224,7 +210,7 @@ public class Resident {
         return accommodationDate;
     }
 
-    public void setAccommodationDate(Date accommodationDate) {
+    void setAccommodationDate(Date accommodationDate) {
         this.accommodationDate.set(accommodationDate);
     }
 
@@ -237,7 +223,7 @@ public class Resident {
         return evictionDate;
     }
 
-    public void setEvictionDate(Date evictionDate) {
+    void setEvictionDate(Date evictionDate) {
         this.evictionDate.set(evictionDate);
     }
 
@@ -250,7 +236,7 @@ public class Resident {
         return isBlocked;
     }
 
-    public void setIsBlocked(boolean isBlocked) {
+    void setIsBlocked(boolean isBlocked) {
         this.isBlocked.set(isBlocked);
     }
 
@@ -265,6 +251,18 @@ public class Resident {
 
     public void setResidentRoomId(int residentRoomId) {
         this.residentRoomId.set(residentRoomId);
+    }
+
+    public int getResidentId() {
+        return residentId.get();
+    }
+
+    public void setResidentId(int residentId) {
+        this.residentId.set(residentId);
+    }
+
+    public IntegerProperty residentIdProperty() {
+        return residentId;
     }
 }
 
