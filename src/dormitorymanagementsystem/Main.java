@@ -12,9 +12,8 @@ public class Main extends Application {
     @Override
     public void start(@NotNull Stage primaryStage) throws Exception {
         Parent root = FXMLLoader.load(getClass().getResource("views/ResidentList.fxml"));
-        primaryStage.setTitle("Resident List");
-        primaryStage.setScene(new Scene(root, 1024, 600));
-//        primaryStage.setFullScreen(true);
+        primaryStage.setTitle("Login Window");
+        primaryStage.setScene(new Scene(root));
         primaryStage.show();
     }
 

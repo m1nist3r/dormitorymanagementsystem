@@ -4,7 +4,7 @@ import javafx.beans.property.*;
 
 import java.util.Date;
 
-public class Resident {
+public class Resident extends ResidentStudent {
     //Declare Residents Table Columns
     private IntegerProperty residentId;
     private IntegerProperty residentTypeId;
@@ -26,6 +26,7 @@ public class Resident {
 
     //Constructor
     Resident() {
+        super();
         this.residentId = new SimpleIntegerProperty();
         this.residentTypeId = new SimpleIntegerProperty();
         this.residentRoomId = new SimpleIntegerProperty();
@@ -46,8 +47,8 @@ public class Resident {
     }
 
     //resident_id
-    public int getResidentTypeId() {
-        return residentTypeId.get();
+    public String getResidentTypeId() {
+        return String.valueOf(residentTypeId.get());
     }
 
     public IntegerProperty residentTypeIdProperty() {
@@ -111,8 +112,8 @@ public class Resident {
     }
 
     //date of birth
-    public Date getDobDate() {
-        return dobDate.get();
+    public String getDobDate() {
+        return dobDate.get().toString();
     }
 
     public SimpleObjectProperty<Date> dobDateProperty() {
@@ -202,8 +203,8 @@ public class Resident {
     }
 
     //accommodation_date
-    public Date getAccommodationDate() {
-        return accommodationDate.get();
+    public String getAccommodationDate() {
+        return accommodationDate.get().toString();
     }
 
     public SimpleObjectProperty<Date> accommodationDateProperty() {
@@ -215,8 +216,8 @@ public class Resident {
     }
 
     //eviction_date
-    public Date getEvictionDate() {
-        return evictionDate.get();
+    public String getEvictionDate() {
+        return evictionDate.get().toString();
     }
 
     public SimpleObjectProperty<Date> evictionDateProperty() {
@@ -228,8 +229,8 @@ public class Resident {
     }
 
     //is_blocked
-    public boolean getIsBlocked() {
-        return isBlocked.get();
+    public String getIsBlocked() {
+        return String.valueOf(isBlocked.get());
     }
 
     public BooleanProperty isBlockedProperty() {
@@ -241,8 +242,8 @@ public class Resident {
     }
 
     //id_room
-    public int getResidentRoomId() {
-        return residentRoomId.get();
+    public String getResidentRoomId() {
+        return String.valueOf(residentRoomId.get());
     }
 
     public IntegerProperty residentRoomIdProperty() {
@@ -253,8 +254,8 @@ public class Resident {
         this.residentRoomId.set(residentRoomId);
     }
 
-    public int getResidentId() {
-        return residentId.get();
+    public String getResidentId() {
+        return String.valueOf(residentId.get());
     }
 
     public void setResidentId(int residentId) {

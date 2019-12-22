@@ -4,8 +4,17 @@ import dormitorymanagementsystem.model.resident.Resident;
 import dormitorymanagementsystem.model.resident.ResidentDAO;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
-import javafx.scene.control.*;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
+import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableView;
+import javafx.scene.control.TextArea;
+import javafx.scene.control.TextField;
+import javafx.stage.Modality;
+import javafx.stage.Stage;
 
+import java.io.IOException;
 import java.sql.SQLException;
 import java.util.Date;
 
@@ -24,8 +33,6 @@ public class ResidentListController {
     private TableColumn<Resident, String> residentNameColumn;
     @FXML
     private TableColumn<Resident, String> residentLastNameColumn;
-    @FXML
-    private TableColumn<Resident, String> residentPassportNumberColumn;
     @FXML
     private TableColumn<Resident, String> residentPeselColumn;
     @FXML
@@ -56,8 +63,11 @@ public class ResidentListController {
     private TextArea resultArea;
     @FXML
     private TextField searchField;
-    @FXML
-    private ChoiceBox<String> filteringBox;
+//    @FXML
+//    private Button inspectResidentButton;
+
+   /* @FXML
+    private ChoiceBox<String> filteringBox;*/
 
     //Search an resident
     @FXML
@@ -89,16 +99,6 @@ public class ResidentListController {
 
     @FXML
     private void initialize() {
-        /*
-        The setCellValueFactory(...) that we set on the table columns are used to determine
-        which field inside the Resident objects should be used for the particular column.
-        The arrow -> indicates that we're using a Java 8 feature called Lambdas.
-        (Another option would be to use a PropertyValueFactory, but this is not type-safe
-
-        We're only using StringProperty values for our table columns in this example.
-        When you want to use IntegerProperty or DoubleProperty, the setCellValueFactory(...)
-        must have an additional asObject():
-        */
         residentIdColumn.setCellValueFactory(cellData -> cellData.getValue().residentIdProperty().asObject());
         residentIdTypeColumn.setCellValueFactory(cellData -> cellData.getValue().residentTypeIdProperty().asObject());
         residentIdRoomColumn.setCellValueFactory(cellData -> cellData.getValue().residentRoomIdProperty().asObject());
@@ -119,9 +119,52 @@ public class ResidentListController {
 
         try {
             searchResidents();
+
         } catch (SQLException e) {
             e.printStackTrace();
         }
+    }
+
+    private void createAndShowPopUp(String view, String title, int residentId, int residentTypeId) {
+        try {
+            // Loader
+            FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource(view));
+            Parent root1 = fxmlLoader.load();
+            Stage stage = new Stage();
+            stage.initModality(Modality.NONE);
+            stage.setTitle(title);
+            stage.setScene(new Scene(root1));
+            ResidentPopUpController controller = fxmlLoader.getController();
+            controller.setStage(stage);
+            controller.setResidentId(residentId);
+            controller.setResidentTypeId(residentTypeId);
+
+            stage.show();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+
+    @FXML
+    public void inspectResidentPopUp() {
+        Resident tablePopUpSelectionModel = residentTable
+                .getSelectionModel()
+                .getSelectedItem();
+        int residentId = Integer.parseInt(tablePopUpSelectionModel.getResidentId());
+        int residentTypeId = Integer.parseInt(tablePopUpSelectionModel.getResidentTypeId());
+        System.out.println(residentId + residentTypeId);
+        String viewPath = "../views/ResidentPopUpDetails.fxml";
+        String titlePopUp = "Resident details: " +
+                residentTable
+                        .getSelectionModel()
+                        .getSelectedItem()
+                        .getFirstName() + " " +
+                residentTable
+                        .getSelectionModel()
+                        .getSelectedItem()
+                        .getLastName();
+        createAndShowPopUp(viewPath, titlePopUp, residentId, residentTypeId);
     }
 
     @FXML
