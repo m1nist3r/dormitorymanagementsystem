@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.VBox?>
+<VBox xmlns:fx="http://javafx.com/fxml/1" alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity"
+      minHeight="-Infinity" minWidth="-Infinity" prefHeight="670.0" prefWidth="100.0" spacing="50.0"
+      style="-fx-background-color: lightgray;" xmlns="http://javafx.com/javafx/11.0.1"
+      fx:controller="dormitorymanagementsystem.controllers.SidePanelController">
+    <Button fx:id="addResidentButton" alignment="CENTER" contentDisplay="TOP" graphicTextGap="1.0"
+            mnemonicParsing="false" onMouseClicked="#addResident" prefHeight="50.0" prefWidth="70.0"
+            style="-fx-background-color: lightgray; -fx-border-style: solid solid solid; -fx-border-color: silver;"
+            text="Chek In" textAlignment="CENTER" wrapText="true"/>
+    <Button fx:id="listOfResidentButton" alignment="CENTER" contentDisplay="TOP" graphicTextGap="1.0"
+            mnemonicParsing="false" onMouseClicked="#showListOfResident" prefHeight="50.0" prefWidth="70.0"
+            style="-fx-background-color: lightgray; -fx-border-style: solid solid solid; -fx-border-color: silver;"
+            text="Resident List" textAlignment="CENTER" wrapText="true"/>
+    <Button fx:id="listOfRoomButton" contentDisplay="TOP" graphicTextGap="1.0" mnemonicParsing="false"
+            onMouseClicked="#showListOfRooms" prefHeight="50.0" prefWidth="70.0"
+            style="-fx-background-color: lightgray; -fx-border-style: solid solid solid; -fx-border-color: silver;"
+            text="Room List" textAlignment="CENTER" wrapText="true"/>
+    <Button fx:id="paymentDetailsList" contentDisplay="TOP" graphicTextGap="1.0" mnemonicParsing="false"
+            onMouseClicked="#showPayments" prefHeight="50.0" prefWidth="70.0"
+            style="-fx-background-color: lightgray; -fx-border-style: solid solid solid; -fx-border-color: silver;"
+            text="Payments" textAlignment="CENTER" wrapText="true"/>
+    <Button fx:id="archiveListButton" contentDisplay="TOP" graphicTextGap="1.0" mnemonicParsing="false"
+            onMouseClicked="#showArchive" prefHeight="50.0" prefWidth="70.0"
+            style="-fx-background-color: lightgray; -fx-border-style: solid solid solid; -fx-border-color: silver;"
+            text="Archive" textAlignment="CENTER" wrapText="true"/>
+    <Button fx:id="settingsListButton" contentDisplay="TOP" graphicTextGap="1.0" mnemonicParsing="false"
+            onMouseClicked="#showSettings" prefHeight="50.0" prefWidth="70.0"
+            style="-fx-background-color: lightgray; -fx-border-style: solid solid solid; -fx-border-color: silver;"
+            text="Settings" textAlignment="CENTER" wrapText="true"/>
+</VBox>
