@@ -35,7 +35,7 @@ public class SidePanelController {
 
     private Stage primaryStage;
 
-    void setPrimaryStage(Stage primaryStage) {
+    public void setPrimaryStage(Stage primaryStage) {
         this.primaryStage = primaryStage;
     }
 
@@ -64,11 +64,14 @@ public class SidePanelController {
 
     @FXML
     void showListOfResident(MouseEvent event) {
-        try {
-//            changeScene("/fxml/ResidentList.fxml");
-            changeScene();
-        } catch (Exception e) {
-            e.printStackTrace();
+        String pathXML = "/fxml/ResidentList.fxml";
+        if (!ResidentListController.is_Active) {
+            try {
+                changeScene(pathXML);
+                ResidentListController.is_Active = true;
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         }
     }
 
@@ -87,10 +90,9 @@ public class SidePanelController {
 
     }
 
-    private void changeScene() throws IOException {
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/ResidentList.fxml"));
+    private void changeScene(String pathXML) throws IOException {
+        FXMLLoader loader = new FXMLLoader(getClass().getResource(pathXML));
         Parent root = loader.load();
-        primaryStage.setTitle("Dormitory management system");
         primaryStage.setHeight(720);
         primaryStage.setWidth(1280);
         primaryStage.getScene().setRoot(root);
