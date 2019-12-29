@@ -1,7 +1,7 @@
 package dormitorymanagementsystem.controllers;
 
-import dormitorymanagementsystem.model.resident.Admin;
-import dormitorymanagementsystem.model.resident.AdminDAO;
+import dormitorymanagementsystem.model.admin.Admin;
+import dormitorymanagementsystem.model.admin.AdminDAO;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -80,7 +80,7 @@ public class LoginWindowController {
         MainWindowController controller = loader.getController();
         controller.setPrimaryStage(primaryStage);
         controller.setAdmin(admin);
-        primaryStage.setHeight(720);
+        primaryStage.setHeight(760);
         primaryStage.setWidth(1280);
         primaryStage.getScene().setRoot(root);
     }

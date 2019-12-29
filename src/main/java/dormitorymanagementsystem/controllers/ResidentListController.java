@@ -11,7 +11,9 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.*;
+import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableView;
+import javafx.scene.control.TextField;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 
@@ -65,20 +67,15 @@ public class ResidentListController {
     @FXML
     private TextField searchField;
     @FXML
-    private Button inspectResidentButton;
-    @FXML
-    private Button editResidentButton;
-    @FXML
-    private ChoiceBox filteringBox;
-    @FXML
     private JFXDrawer drawer;
     @FXML
     private JFXHamburger menuHamburger;
     private Stage primaryStage;
 
-    void setPrimaryStage(Stage primaryStage) {
+/*    void setPrimaryStage(Stage primaryStage) {
         this.primaryStage = primaryStage;
     }
+*/
 
     //Search an resident
     @FXML
@@ -94,7 +91,6 @@ public class ResidentListController {
             throw e;
         }
     }
-
     //Search all residents
     private void searchResidents() throws SQLException {
         try {
@@ -108,12 +104,17 @@ public class ResidentListController {
         }
     }
 
+    //Initiazlization of view before displaying
     @FXML
     private void initialize() {
+        //Wait a momment then run
         Platform.runLater(() -> {
+            //Initialization of side panel and open menu button
             SidePanelInstance sidePanelInstance = new SidePanelInstance(drawer, menuHamburger, primaryStage);
             sidePanelInstance.sidePanelInit();
             sidePanelInstance.setUpHamburger();
+
+            //region TableColumn setCellValueFactory
             residentIdColumn.setCellValueFactory(cellData -> cellData.getValue().residentIdProperty().asObject());
             residentIdTypeColumn.setCellValueFactory(cellData -> cellData.getValue().residentTypeIdProperty().asObject());
             residentIdRoomColumn.setCellValueFactory(cellData -> cellData.getValue().residentRoomIdProperty().asObject());
@@ -130,17 +131,23 @@ public class ResidentListController {
             residentPhoneNumberColumn.setCellValueFactory(cellData -> cellData.getValue().phoneNumberProperty());
             residentAccommodationColumn.setCellValueFactory(cellData -> cellData.getValue().accommodationDateProperty());
             residentEvictionDateColumn.setCellValueFactory(cellData -> cellData.getValue().evictionDateProperty());
-            residentIsBlockedColumn.setCellValueFactory(cellData -> cellData.getValue().isBlockedProperty());
+            //endregion
 
+            //Table Reordering Disable
+            residentIsBlockedColumn.setCellValueFactory(cellData -> cellData.getValue().isBlockedProperty());
+            for (TableColumn column : residentTable.getColumns()) {
+                column.setReorderable(false);
+            }
+            //Searchinf for Resident
             try {
                 searchResidents();
-
             } catch (SQLException e) {
                 e.printStackTrace();
             }
         });
     }
 
+    //Method of creation and showing detailed information of resident
     private void createAndShowPopUp(String view, String title, int residentId, int residentTypeId) {
         try {
             // Loader
@@ -161,7 +168,7 @@ public class ResidentListController {
         }
     }
 
-
+    //Show detailed information of Resident
     @FXML
     public void inspectResidentPopUp() {
         Resident tablePopUpSelectionModel = residentTable
@@ -183,6 +190,7 @@ public class ResidentListController {
         createAndShowPopUp(viewPath, titlePopUp, residentId, residentTypeId);
     }
 
+    //Searching for Resident by Name/Surname
     @FXML
     public void searchForResident() throws SQLException {
         cleanTable();
@@ -198,8 +206,8 @@ public class ResidentListController {
         residentTable.setItems(resData);
     }
 
+    //Clean Resident table
     private void cleanTable() {
         residentTable.getItems().clear();
     }
-
 }

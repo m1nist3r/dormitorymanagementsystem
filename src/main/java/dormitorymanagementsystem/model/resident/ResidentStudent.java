@@ -3,7 +3,7 @@ package dormitorymanagementsystem.model.resident;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 
-public class ResidentStudent {
+public class ResidentStudent extends Resident {
 
     private StringProperty studentNumber;
     private StringProperty department;
@@ -13,6 +13,7 @@ public class ResidentStudent {
 
 
     ResidentStudent() {
+        super();
         this.studentNumber = new SimpleStringProperty();
         this.department = new SimpleStringProperty();
         this.yearOfStudy = new SimpleStringProperty();
@@ -29,10 +30,6 @@ public class ResidentStudent {
         this.studentNumber.set(studentNumber);
     }
 
-    public StringProperty studentNumberProperty() {
-        return studentNumber;
-    }
-
     public String getDepartment() {
         return department.get();
     }
@@ -41,9 +38,6 @@ public class ResidentStudent {
         this.department.set(department);
     }
 
-    public StringProperty departmentProperty() {
-        return department;
-    }
 
     public String getYearOfStudy() {
         return yearOfStudy.get();
@@ -51,10 +45,6 @@ public class ResidentStudent {
 
     void setYearOfStudy(String yearOfStudy) {
         this.yearOfStudy.set(yearOfStudy);
-    }
-
-    public StringProperty yearOfStudyProperty() {
-        return yearOfStudy;
     }
 
     public String getAcademicYear() {
@@ -65,10 +55,6 @@ public class ResidentStudent {
         this.academicYear.set(academicYear);
     }
 
-    public StringProperty academicYearProperty() {
-        return academicYear;
-    }
-
     public String getStudentPaymentAccount() {
         return studentPaymentAccount.get();
     }
@@ -76,9 +62,4 @@ public class ResidentStudent {
     void setStudentPaymentAccount(String studentPaymentAccount) {
         this.studentPaymentAccount.set(studentPaymentAccount);
     }
-
-    public StringProperty studentPaymentAccountProperty() {
-        return studentPaymentAccount;
-    }
-
 }

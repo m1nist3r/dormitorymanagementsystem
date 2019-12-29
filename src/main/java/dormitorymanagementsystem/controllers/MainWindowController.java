@@ -2,7 +2,7 @@ package dormitorymanagementsystem.controllers;
 
 import com.jfoenix.controls.JFXDrawer;
 import com.jfoenix.controls.JFXHamburger;
-import dormitorymanagementsystem.model.resident.Admin;
+import dormitorymanagementsystem.model.admin.Admin;
 import dormitorymanagementsystem.util.SidePanelInstance;
 import javafx.application.Platform;
 import javafx.fxml.FXML;

@@ -4,8 +4,8 @@ import javafx.beans.property.*;
 
 import java.util.Date;
 
-public class Resident extends ResidentStudent {
-    //Declare Residents Table Columns
+public class Resident {
+    //Declare Resident Properties
     private IntegerProperty residentId;
     private IntegerProperty residentTypeId;
     private IntegerProperty residentRoomId;
@@ -26,7 +26,6 @@ public class Resident extends ResidentStudent {
 
     //Constructor
     Resident() {
-        super();
         this.residentId = new SimpleIntegerProperty();
         this.residentTypeId = new SimpleIntegerProperty();
         this.residentRoomId = new SimpleIntegerProperty();
@@ -217,7 +216,9 @@ public class Resident extends ResidentStudent {
 
     //eviction_date
     public String getEvictionDate() {
-        return evictionDate.get().toString();
+        if (evictionDate.get() != null) {
+            return evictionDate.get().toString();
+        } else return "null";
     }
 
     void setEvictionDate(Date evictionDate) {
@@ -254,6 +255,7 @@ public class Resident extends ResidentStudent {
         return residentRoomId;
     }
 
+    //id
     public String getResidentId() {
         return String.valueOf(residentId.get());
     }
@@ -265,5 +267,6 @@ public class Resident extends ResidentStudent {
     public IntegerProperty residentIdProperty() {
         return residentId;
     }
+
 }
 

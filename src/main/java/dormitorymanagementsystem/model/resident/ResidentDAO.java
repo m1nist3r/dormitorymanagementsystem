@@ -8,7 +8,6 @@ import org.jetbrains.annotations.NotNull;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-
 public class ResidentDAO {
 
     //*******************************
@@ -36,19 +35,20 @@ public class ResidentDAO {
 
     //                "        GROUP_CONCAT(rt.field_name SEPARATOR ', ') as resident_detail_field,\n" +
     @NotNull
-    public static ObservableList<Resident> searchResidentById(int id, int resident_type) throws SQLException {
+    public static <T> ObservableList<T> searchResidentById(int id, int resident_type) throws SQLException {
         //Declare a SELECT statement
         String selectStmt = "SELECT r.*, t.Type, \n" +
                 "        GROUP_CONCAT(rv.value SEPARATOR ', ') as resident_detail_value\n" +
                 "                FROM resident r \n" +
                 "        INNER JOIN type_of_resident t ON r.id_type = t.idType\n" +
                 "        INNER JOIN resident_type_fields rt ON r.id_type = rt.idType\n" +
-                "        INNER JOIN resident_values_fields rv ON rt.idField = rv.idField WHERE r.id_resident = ?";
+                "        INNER JOIN resident_values_fields rv ON rt.idField = rv.idField" +
+                "        WHERE rv.idResident = ? AND r.id_resident = ?";
 
         //Execute SELECT statement
         try {
             //Get ResultSet from dbExecuteQuery method
-            ResultSet rsRes = DBUtil.dbExecutePreparedQuery(selectStmt, id);
+            ResultSet rsRes = DBUtil.dbExecutePreparedQuery(selectStmt, id, id);
 
             //Send ResultSet to the getResidentFromResultSet method and get resident object
             //Return resident object
@@ -83,7 +83,7 @@ public class ResidentDAO {
         }
     }
 
-    private static Resident addResidentToObservableList(Resident res, ResultSet rs) throws SQLException {
+    private static <T extends Resident> T addResidentToObservableList(Resident res, ResultSet rs) throws SQLException {
         res.setResidentId(rs.getInt("ID_RESIDENT"));
         res.setResidentTypeId(rs.getInt("ID_TYPE"));
         res.setResidentRoomId(rs.getInt("ID_ROOM"));
@@ -102,7 +102,7 @@ public class ResidentDAO {
         res.setEvictionDate(rs.getDate("EVICTION_DATE"));
         res.setIsBlocked(rs.getBoolean("IS_BLOCKED"));
 
-        return res;
+        return ((T) res);
     }
 
     //Use ResultSet from DB as parameter and set Resident Object's attributes and return resident object.
@@ -120,13 +120,13 @@ public class ResidentDAO {
     }
 
     @NotNull
-    private static ObservableList<Resident> getResidentById(@NotNull ResultSet rs, int resident_type) throws SQLException {
+    private static <T> ObservableList<T> getResidentById(@NotNull ResultSet rs, int resident_type) throws SQLException {
         //Declare a observable List which comprises of Resident objects
-        ObservableList<Resident> resList = FXCollections.observableArrayList();
+        ObservableList<T> resList = FXCollections.observableArrayList();
         switch (resident_type) {
             case 1: {
                 while (rs.next()) {
-                    Resident res = new Resident();
+                    ResidentStudent res = new ResidentStudent();
                     String[] subStr = (rs.getString("RESIDENT_DETAIL_VALUE")).split(", ");
                     res.setStudentNumber(subStr[0]);
                     res.setDepartment(subStr[1]);
@@ -135,7 +135,42 @@ public class ResidentDAO {
                     res.setStudentPaymentAccount(subStr[4]);
 
                     //Add resident to the ObservableList
-                    resList.add(addResidentToObservableList(res, rs));
+                    resList.add((T) addResidentToObservableList(res, rs));
+                }
+                break;
+            }
+            case 2: {
+                while (rs.next()) {
+                    ResidentErasmus res = new ResidentErasmus();
+                    String[] subStr = (rs.getString("RESIDENT_DETAIL_VALUE")).split(", ");
+                    res.setOriginUniversity(subStr[0]);
+                    res.setErasmusNumber(subStr[1]);
+
+                    //Add resident to the ObservableList
+                    resList.add((T) addResidentToObservableList(res, rs));
+                }
+                break;
+            }
+            case 3: {
+                while (rs.next()) {
+                    ResidentForeignStudent res = new ResidentForeignStudent();
+                    String[] subStr = (rs.getString("RESIDENT_DETAIL_VALUE")).split(", ");
+                    res.setOriginUniversity(subStr[0]);
+
+                    //Add resident to the ObservableList
+                    resList.add((T) addResidentToObservableList(res, rs));
+                }
+                break;
+            }
+            case 4: {
+                while (rs.next()) {
+                    ResidentGuest res = new ResidentGuest();
+                    String[] subStr = (rs.getString("RESIDENT_DETAIL_VALUE")).split(", ");
+                    res.setIsStudent(subStr[0]);
+                    res.setIsPartTimeStudent(subStr[1]);
+
+                    //Add resident to the ObservableList
+                    resList.add((T) addResidentToObservableList(res, rs));
                 }
                 break;
             }
@@ -143,14 +178,12 @@ public class ResidentDAO {
         return resList;
     }
 
-
     //*************************************
     //UPDATE a resident's details
     //*************************************
     public static void updateResident(String resId, String columnName, String newValue) throws SQLException {
         //Declare a UPDATE statement
         String updateStmt = "UPDATE resident SET " + columnName + " = " + newValue + "  WHERE " + resId + " = id_resident";
-
         //Execute UPDATE operation
         try {
             DBUtil.dbExecuteUpdate(updateStmt);
@@ -166,7 +199,6 @@ public class ResidentDAO {
     public static void deleteResWithId(String resId) throws SQLException {
         //Declare a DELETE statement
         String updateStmt = "DELETE FROM resident WHERE id_resident = " + resId + "";
-
         //Execute UPDATE operation
         try {
             DBUtil.dbExecuteUpdate(updateStmt);

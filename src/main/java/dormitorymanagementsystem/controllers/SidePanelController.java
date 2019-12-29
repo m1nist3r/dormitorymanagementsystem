@@ -6,14 +6,12 @@ import javafx.scene.Parent;
 import javafx.scene.control.Button;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
 
 import java.io.IOException;
 
 
 public class SidePanelController {
-
 
     @FXML
     private Button addResidentButton;
@@ -30,8 +28,8 @@ public class SidePanelController {
     @FXML
     private Button archiveListButton;
 
-    @FXML
-    private Button settingsListButton;
+//    @FXML
+//    private Button settingsListButton;
 
     private Stage primaryStage;
 
@@ -53,17 +51,17 @@ public class SidePanelController {
     }
 
     @FXML
-    void addResident(MouseEvent event) {
+    void addResident() {
         //changeScene("/fxml/");
     }
 
     @FXML
-    void showArchive(MouseEvent event) {
+    void showArchive() {
 
     }
 
     @FXML
-    void showListOfResident(MouseEvent event) {
+    void showListOfResident() {
         String pathXML = "/fxml/ResidentList.fxml";
         if (!ResidentListController.is_Active) {
             try {
@@ -76,24 +74,24 @@ public class SidePanelController {
     }
 
     @FXML
-    void showListOfRooms(MouseEvent event) {
+    void showListOfRooms() {
 
     }
 
     @FXML
-    void showPayments(MouseEvent event) {
+    void showPayments() {
 
     }
 
     @FXML
-    void showSettings(MouseEvent event) {
+    void showSettings() {
 
     }
 
     private void changeScene(String pathXML) throws IOException {
         FXMLLoader loader = new FXMLLoader(getClass().getResource(pathXML));
         Parent root = loader.load();
-        primaryStage.setHeight(720);
+        primaryStage.setHeight(760);
         primaryStage.setWidth(1280);
         primaryStage.getScene().setRoot(root);
     }

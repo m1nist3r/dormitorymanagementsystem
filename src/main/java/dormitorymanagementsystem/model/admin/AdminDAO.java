@@ -1,4 +1,4 @@
-package dormitorymanagementsystem.model.resident;
+package dormitorymanagementsystem.model.admin;
 
 import dormitorymanagementsystem.util.DBUtil;
 
