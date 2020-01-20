@@ -68,18 +68,21 @@ public class LoginWindowController {
 
         String pesel = loginPesel.getText();
         String password = loginPassword.getText();
-
+        System.out.println(pesel + " " + password);
         Admin admin = AdminDAO.searchAdminByPesPas(pesel, password);
-        login(admin);
+        System.out.println(admin.getPesel());
+        if (admin.getPesel() != null) {
+            login(admin);
+        } else showAlert(owner, "Niepoprawne dane");
     }
 
     private void login(Admin admin) throws IOException {
         FXMLLoader loader = new FXMLLoader(
-                getClass().getResource("/fxml/MainWindow.fxml"));
+                getClass().getResource("/fxml/ResidentList.fxml"));
         Parent root = loader.load();
-        MainWindowController controller = loader.getController();
+        ResidentListController controller = loader.getController();
         controller.setPrimaryStage(primaryStage);
-        controller.setAdmin(admin);
+        //controller.setAdmin(admin);
         primaryStage.setHeight(760);
         primaryStage.setWidth(1280);
         primaryStage.getScene().setRoot(root);

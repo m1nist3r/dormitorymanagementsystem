@@ -2,6 +2,8 @@ package dormitorymanagementsystem.model.resident;
 
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 
 public class ResidentGuest extends Resident {
 
@@ -28,5 +30,12 @@ public class ResidentGuest extends Resident {
 
     void setIsPartTimeStudent(String isPartTimeStudent) {
         this.isPartTimeStudent.set(isPartTimeStudent);
+    }
+
+    public ObservableList<String> listOfResidentStudent() {
+        ObservableList<String> list = FXCollections.observableArrayList();
+        list.addAll(super.listOfResidentStudent());
+        list.addAll(this.getIsStudent(), this.getIsPartTimeStudent());
+        return list;
     }
 }

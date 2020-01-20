@@ -1,14 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import com.jfoenix.controls.JFXDrawer?>
-<?import com.jfoenix.controls.JFXHamburger?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.AnchorPane?>
 <AnchorPane xmlns:fx="http://javafx.com/fxml/1" prefHeight="720.0" prefWidth="1280.0"
             xmlns="http://javafx.com/javafx/11.0.1"
             fx:controller="dormitorymanagementsystem.controllers.ResidentListController">
-    <TableView fx:id="residentTable" editable="true" layoutX="75.0" layoutY="50.0" prefHeight="620.0"
-               prefWidth="1160.0">
+    <TableView fx:id="residentTable" editable="true" layoutX="135.0" layoutY="50.0" prefHeight="620.0"
+               prefWidth="1100.0">
         <columns>
             <TableColumn fx:id="residentIdColumn" prefWidth="75.0" text="idResident" visible="false"/>
             <TableColumn fx:id="residentIdTypeColumn" prefWidth="90.0" resizable="false" text="Resident Type"/>
@@ -38,12 +37,7 @@
     <TextField fx:id="searchField" layoutX="525.0" layoutY="11.0" onKeyTyped="#searchForResident" prefHeight="26.0"
                prefWidth="200.0"/>
     <Label layoutX="461.0" layoutY="15.0" text="Wyszukaj:"/>
-    <ChoiceBox layoutX="175.0" layoutY="11.0" prefWidth="150.0"/>
-    <Label layoutX="142.0" layoutY="15.0" text="Filtruj:"/>
-    <Button layoutX="1144.0" layoutY="680.0" mnemonicParsing="false"
-            onMouseClicked="#inspectResidentPopUp" prefHeight="26.0" prefWidth="90.0" text="Inspect"/>
+    <Button layoutX="1144.0" layoutY="680.0" mnemonicParsing="false" onMouseClicked="#inspectResidentPopUp"
+            prefHeight="26.0" prefWidth="90.0" text="Inspect"/>
     <JFXDrawer fx:id="drawer" layoutY="50.0" prefHeight="669.0" prefWidth="75.8"/>
-    <JFXHamburger fx:id="menuHamburger" layoutX="21.0" layoutY="14.0"/>
-    <Button alignment="CENTER" layoutX="1041.0" layoutY="681.0" mnemonicParsing="false"
-            prefHeight="26.0" prefWidth="90.0" text="Edit" textAlignment="CENTER"/>
 </AnchorPane>

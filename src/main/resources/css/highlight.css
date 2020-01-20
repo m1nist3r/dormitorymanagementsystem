@@ -1,0 +1,9 @@
+.table-view:focused {
+    -fx-background-color: -fx-outer-border, -fx-inner-border, -fx-body-color;
+    -fx-background-insets: 0, 1, 2;
+}
+
+.text-field:focused {
+    -fx-background-color: -fx-outer-border, white, white;
+    -fx-background-insets: 0, 1, 2;
+}

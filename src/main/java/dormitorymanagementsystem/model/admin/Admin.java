@@ -2,6 +2,19 @@ package dormitorymanagementsystem.model.admin;
 
 public class Admin {
     private String pesel;
+
+    public String getPesel() {
+        return pesel;
+    }
+
+    public int getIdAdminType() {
+        return idAdminType;
+    }
+
+    public int getIdAdmin() {
+        return idAdmin;
+    }
+
     private String password;
     private int idAdminType;
     private int idAdmin;

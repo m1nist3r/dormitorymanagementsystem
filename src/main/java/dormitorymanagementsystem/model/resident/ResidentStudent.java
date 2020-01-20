@@ -2,6 +2,9 @@ package dormitorymanagementsystem.model.resident;
 
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
+
 
 public class ResidentStudent extends Resident {
 
@@ -11,8 +14,7 @@ public class ResidentStudent extends Resident {
     private StringProperty academicYear;
     private StringProperty studentPaymentAccount;
 
-
-    ResidentStudent() {
+    public ResidentStudent() {
         super();
         this.studentNumber = new SimpleStringProperty();
         this.department = new SimpleStringProperty();
@@ -61,5 +63,12 @@ public class ResidentStudent extends Resident {
 
     void setStudentPaymentAccount(String studentPaymentAccount) {
         this.studentPaymentAccount.set(studentPaymentAccount);
+    }
+
+    public ObservableList<String> listOfResidentStudent() {
+        ObservableList<String> list = FXCollections.observableArrayList();
+        list.addAll(super.listOfResidentStudent());
+        list.addAll(this.getStudentNumber(), this.getDepartment(), this.getYearOfStudy(), this.getAcademicYear(), this.getStudentPaymentAccount());
+        return list;
     }
 }

@@ -1,6 +1,7 @@
 package dormitorymanagementsystem.model.admin;
 
 import dormitorymanagementsystem.util.DBUtil;
+import org.jetbrains.annotations.NotNull;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -18,6 +19,7 @@ public class AdminDAO {
         return admin;
     }
 
+    @NotNull
     public static Admin searchAdminByPesPas(String pesel, String password) throws SQLException {
         //Execute SELECT statement
         String selectStmt = "SELECT idAdmin, Password, PESEL, idAdmin_type FROM adminstrator WHERE PESEL = ? AND Password = ?";

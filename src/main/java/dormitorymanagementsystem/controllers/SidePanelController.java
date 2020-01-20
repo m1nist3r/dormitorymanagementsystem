@@ -21,12 +21,12 @@ public class SidePanelController {
 
     @FXML
     private Button listOfRoomButton;
-
+/*
     @FXML
     private Button paymentDetailsList;
 
     @FXML
-    private Button archiveListButton;
+    private Button archiveListButton;*/
 
 //    @FXML
 //    private Button settingsListButton;
@@ -44,15 +44,25 @@ public class SidePanelController {
         listOfResidentButton.setGraphic(new ImageView(imageButtom));
         imageButtom = new Image(getClass().getResourceAsStream("/img/baseline_business_black_18dp.png"));
         listOfRoomButton.setGraphic(new ImageView(imageButtom));
-        imageButtom = new Image(getClass().getResourceAsStream("/img/baseline_payment_black_18dp.png"));
+/*        imageButtom = new Image(getClass().getResourceAsStream("/img/baseline_payment_black_18dp.png"));
         paymentDetailsList.setGraphic(new ImageView(imageButtom));
         imageButtom = new Image(getClass().getResourceAsStream("/img/baseline_archive_black_18dp.png"));
-        archiveListButton.setGraphic(new ImageView(imageButtom));
+        archiveListButton.setGraphic(new ImageView(imageButtom));*/
     }
 
     @FXML
     void addResident() {
-        //changeScene("/fxml/");
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/addResident.fxml"));
+            Parent root = loader.load();
+            AddResidentController addResidentController = loader.getController();
+            addResidentController.setPrimaryStage(primaryStage);
+            primaryStage.setHeight(760);
+            primaryStage.setWidth(1280);
+            primaryStage.getScene().setRoot(root);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     @FXML
@@ -62,20 +72,32 @@ public class SidePanelController {
 
     @FXML
     void showListOfResident() {
-        String pathXML = "/fxml/ResidentList.fxml";
-        if (!ResidentListController.is_Active) {
             try {
-                changeScene(pathXML);
-                ResidentListController.is_Active = true;
+                FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/ResidentList.fxml"));
+                Parent root = loader.load();
+                ResidentListController residentListController = loader.getController();
+                residentListController.setPrimaryStage(primaryStage);
+                primaryStage.setHeight(760);
+                primaryStage.setWidth(1280);
+                primaryStage.getScene().setRoot(root);
             } catch (Exception e) {
                 e.printStackTrace();
             }
         }
-    }
 
     @FXML
     void showListOfRooms() {
-
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/RoomTableView.fxml"));
+            Parent root = loader.load();
+            RoomTableViewController roomTableViewController = loader.getController();
+            roomTableViewController.setPrimaryStage(primaryStage);
+            primaryStage.setHeight(760);
+            primaryStage.setWidth(1280);
+            primaryStage.getScene().setRoot(root);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     @FXML
@@ -89,10 +111,6 @@ public class SidePanelController {
     }
 
     private void changeScene(String pathXML) throws IOException {
-        FXMLLoader loader = new FXMLLoader(getClass().getResource(pathXML));
-        Parent root = loader.load();
-        primaryStage.setHeight(760);
-        primaryStage.setWidth(1280);
-        primaryStage.getScene().setRoot(root);
+
     }
 }

@@ -48,6 +48,7 @@ public class SidePanelInstance {
             SidePanelController controller = loader.getController();
             controller.setPrimaryStage(primaryStage);
             drawer.setSidePane(box);
+            drawer.open();
         } catch (IOException ex) {
             Logger.getLogger(MainWindowController.class.getName()).log(Level.SEVERE, null, ex);
         }

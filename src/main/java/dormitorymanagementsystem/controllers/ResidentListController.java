@@ -23,8 +23,6 @@ import java.util.Date;
 
 public class ResidentListController {
 
-    static boolean is_Active = false;
-
     //region TableView and TableColumn components
     @FXML
     private TableView<Resident> residentTable;
@@ -70,12 +68,12 @@ public class ResidentListController {
     private JFXDrawer drawer;
     @FXML
     private JFXHamburger menuHamburger;
+
     private Stage primaryStage;
 
-/*    void setPrimaryStage(Stage primaryStage) {
+    void setPrimaryStage(Stage primaryStage) {
         this.primaryStage = primaryStage;
     }
-*/
 
     //Search an resident
     @FXML
@@ -91,6 +89,7 @@ public class ResidentListController {
             throw e;
         }
     }
+
     //Search all residents
     private void searchResidents() throws SQLException {
         try {
@@ -112,32 +111,10 @@ public class ResidentListController {
             //Initialization of side panel and open menu button
             SidePanelInstance sidePanelInstance = new SidePanelInstance(drawer, menuHamburger, primaryStage);
             sidePanelInstance.sidePanelInit();
-            sidePanelInstance.setUpHamburger();
 
-            //region TableColumn setCellValueFactory
-            residentIdColumn.setCellValueFactory(cellData -> cellData.getValue().residentIdProperty().asObject());
-            residentIdTypeColumn.setCellValueFactory(cellData -> cellData.getValue().residentTypeIdProperty().asObject());
-            residentIdRoomColumn.setCellValueFactory(cellData -> cellData.getValue().residentRoomIdProperty().asObject());
-            residentNameColumn.setCellValueFactory(cellData -> cellData.getValue().firstNameProperty());
-            residentLastNameColumn.setCellValueFactory(cellData -> cellData.getValue().lastNameProperty());
-            residentPeselColumn.setCellValueFactory(cellData -> cellData.getValue().peselProperty());
-            residentGenderColumn.setCellValueFactory(cellData -> cellData.getValue().genderProperty());
-            residentDobColumn.setCellValueFactory(cellData -> cellData.getValue().dobDateProperty());
-            residentMotherNameColumn.setCellValueFactory(cellData -> cellData.getValue().motherNameProperty());
-            residentFatherNameColumn.setCellValueFactory(cellData -> cellData.getValue().fatherNameProperty());
-            residentEmailColumn.setCellValueFactory(cellData -> cellData.getValue().emailProperty());
-            residentCountryColumn.setCellValueFactory(cellData -> cellData.getValue().countryProperty());
-            residentAddressColumn.setCellValueFactory(cellData -> cellData.getValue().addressProperty());
-            residentPhoneNumberColumn.setCellValueFactory(cellData -> cellData.getValue().phoneNumberProperty());
-            residentAccommodationColumn.setCellValueFactory(cellData -> cellData.getValue().accommodationDateProperty());
-            residentEvictionDateColumn.setCellValueFactory(cellData -> cellData.getValue().evictionDateProperty());
-            //endregion
+            //Setting TableView
+            settingTableView();
 
-            //Table Reordering Disable
-            residentIsBlockedColumn.setCellValueFactory(cellData -> cellData.getValue().isBlockedProperty());
-            for (TableColumn column : residentTable.getColumns()) {
-                column.setReorderable(false);
-            }
             //Searchinf for Resident
             try {
                 searchResidents();
@@ -145,6 +122,31 @@ public class ResidentListController {
                 e.printStackTrace();
             }
         });
+    }
+
+    private void settingTableView() {
+        //region TableColumn setCellValueFactory
+        residentIdColumn.setCellValueFactory(cellData -> cellData.getValue().residentIdProperty().asObject());
+        residentIdTypeColumn.setCellValueFactory(cellData -> cellData.getValue().residentTypeIdProperty().asObject());
+        residentIdRoomColumn.setCellValueFactory(cellData -> cellData.getValue().residentRoomIdProperty().asObject());
+        residentNameColumn.setCellValueFactory(cellData -> cellData.getValue().firstNameProperty());
+        residentLastNameColumn.setCellValueFactory(cellData -> cellData.getValue().lastNameProperty());
+        residentPeselColumn.setCellValueFactory(cellData -> cellData.getValue().peselProperty());
+        residentGenderColumn.setCellValueFactory(cellData -> cellData.getValue().genderProperty());
+        residentDobColumn.setCellValueFactory(cellData -> cellData.getValue().dobDateProperty());
+        residentMotherNameColumn.setCellValueFactory(cellData -> cellData.getValue().motherNameProperty());
+        residentFatherNameColumn.setCellValueFactory(cellData -> cellData.getValue().fatherNameProperty());
+        residentEmailColumn.setCellValueFactory(cellData -> cellData.getValue().emailProperty());
+        residentCountryColumn.setCellValueFactory(cellData -> cellData.getValue().countryProperty());
+        residentAddressColumn.setCellValueFactory(cellData -> cellData.getValue().addressProperty());
+        residentPhoneNumberColumn.setCellValueFactory(cellData -> cellData.getValue().phoneNumberProperty());
+        residentAccommodationColumn.setCellValueFactory(cellData -> cellData.getValue().accommodationDateProperty());
+        residentEvictionDateColumn.setCellValueFactory(cellData -> cellData.getValue().evictionDateProperty());
+        //endregion
+
+        //Table Reordering Disable
+        residentIsBlockedColumn.setCellValueFactory(cellData -> cellData.getValue().isBlockedProperty());
+        residentTable.getColumns().forEach(column -> column.setReorderable(false));
     }
 
     //Method of creation and showing detailed information of resident
@@ -176,7 +178,6 @@ public class ResidentListController {
                 .getSelectedItem();
         int residentId = Integer.parseInt(tablePopUpSelectionModel.getResidentId());
         int residentTypeId = Integer.parseInt(tablePopUpSelectionModel.getResidentTypeId());
-        System.out.println(residentId + residentTypeId);
         String viewPath = "/fxml/ResidentPopUpDetails.fxml";
         String titlePopUp = "Resident details: " +
                 residentTable

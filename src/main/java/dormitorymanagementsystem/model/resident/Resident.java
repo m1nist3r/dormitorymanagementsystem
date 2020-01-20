@@ -1,11 +1,14 @@
 package dormitorymanagementsystem.model.resident;
 
 import javafx.beans.property.*;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 
 import java.util.Date;
 
 public class Resident {
-    //Declare Resident Properties
+
+    //region Declare Resident Properties
     private IntegerProperty residentId;
     private IntegerProperty residentTypeId;
     private IntegerProperty residentRoomId;
@@ -23,9 +26,10 @@ public class Resident {
     private SimpleObjectProperty<Date> accommodationDate;
     private SimpleObjectProperty<Date> evictionDate;
     private BooleanProperty isBlocked;
+    //endregion
 
     //Constructor
-    Resident() {
+    public Resident() {
         this.residentId = new SimpleIntegerProperty();
         this.residentTypeId = new SimpleIntegerProperty();
         this.residentRoomId = new SimpleIntegerProperty();
@@ -45,12 +49,13 @@ public class Resident {
         this.isBlocked = new SimpleBooleanProperty();
     }
 
+    //region Getters And Setters For Resident
     //resident_id
     public String getResidentTypeId() {
         return String.valueOf(residentTypeId.get());
     }
 
-    void setResidentTypeId(int residentTypeId) {
+    public void setResidentTypeId(int residentTypeId) {
         this.residentTypeId.set(residentTypeId);
     }
 
@@ -63,7 +68,7 @@ public class Resident {
         return firstName.get();
     }
 
-    void setFirstName(String firstName) {
+    public void setFirstName(String firstName) {
         this.firstName.set(firstName);
     }
 
@@ -76,7 +81,7 @@ public class Resident {
         return lastName.get();
     }
 
-    void setLastName(String lastName) {
+    public void setLastName(String lastName) {
         this.lastName.set(lastName);
     }
 
@@ -89,7 +94,7 @@ public class Resident {
         return pesel.get();
     }
 
-    void setPesel(String pesel) {
+    public void setPesel(String pesel) {
         this.pesel.set(pesel);
     }
 
@@ -102,7 +107,7 @@ public class Resident {
         return gender.get();
     }
 
-    void setGender(String gender) {
+    public void setGender(String gender) {
         this.gender.set(gender);
     }
 
@@ -115,7 +120,7 @@ public class Resident {
         return dobDate.get().toString();
     }
 
-    void setDobDate(Date dobDate) {
+    public void setDobDate(Date dobDate) {
         this.dobDate.set(dobDate);
     }
 
@@ -128,7 +133,7 @@ public class Resident {
         return motherName.get();
     }
 
-    void setMotherName(String motherName) {
+    public void setMotherName(String motherName) {
         this.motherName.set(motherName);
     }
 
@@ -141,7 +146,7 @@ public class Resident {
         return fatherName.get();
     }
 
-    void setFatherName(String fatherName) {
+    public void setFatherName(String fatherName) {
         this.fatherName.set(fatherName);
     }
 
@@ -154,7 +159,7 @@ public class Resident {
         return email.get();
     }
 
-    void setEmail(String email) {
+    public void setEmail(String email) {
         this.email.set(email);
     }
 
@@ -167,7 +172,7 @@ public class Resident {
         return country.get();
     }
 
-    void setCountry(String country) {
+    public void setCountry(String country) {
         this.country.set(country);
     }
 
@@ -180,7 +185,7 @@ public class Resident {
         return address.get();
     }
 
-    void setAddress(String address) {
+    public void setAddress(String address) {
         this.address.set(address);
     }
 
@@ -193,7 +198,7 @@ public class Resident {
         return phoneNumber.get();
     }
 
-    void setPhoneNumber(String phoneNumber) {
+    public void setPhoneNumber(String phoneNumber) {
         this.phoneNumber.set(phoneNumber);
     }
 
@@ -206,7 +211,7 @@ public class Resident {
         return accommodationDate.get().toString();
     }
 
-    void setAccommodationDate(Date accommodationDate) {
+    public void setAccommodationDate(Date accommodationDate) {
         this.accommodationDate.set(accommodationDate);
     }
 
@@ -221,7 +226,7 @@ public class Resident {
         } else return "null";
     }
 
-    void setEvictionDate(Date evictionDate) {
+    public void setEvictionDate(Date evictionDate) {
         this.evictionDate.set(evictionDate);
     }
 
@@ -234,7 +239,7 @@ public class Resident {
         return String.valueOf(isBlocked.get());
     }
 
-    void setIsBlocked(boolean isBlocked) {
+    public void setIsBlocked(boolean isBlocked) {
         this.isBlocked.set(isBlocked);
     }
 
@@ -247,7 +252,7 @@ public class Resident {
         return String.valueOf(residentRoomId.get());
     }
 
-    void setResidentRoomId(int residentRoomId) {
+    public void setResidentRoomId(int residentRoomId) {
         this.residentRoomId.set(residentRoomId);
     }
 
@@ -260,13 +265,23 @@ public class Resident {
         return String.valueOf(residentId.get());
     }
 
-    void setResidentId(int residentId) {
+    public void setResidentId(int residentId) {
         this.residentId.set(residentId);
     }
 
     public IntegerProperty residentIdProperty() {
         return residentId;
     }
+
+    public ObservableList<String> listOfResidentStudent() {
+        ObservableList<String> list = FXCollections.observableArrayList();
+        list.addAll(this.getResidentId(), this.getResidentTypeId(), this.getResidentRoomId(), this.getFirstName(),
+                this.getLastName(), this.getPesel(), this.getGender(), this.getDobDate(), this.getMotherName(),
+                this.getFatherName(), this.getEmail(), this.getCountry(), this.getAddress(), this.getPhoneNumber(),
+                this.getAccommodationDate(), this.getEvictionDate(), this.getIsBlocked());
+        return list;
+    }
+    //endregion
 
 }
 
