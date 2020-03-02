@@ -6,9 +6,8 @@
 <AnchorPane xmlns:fx="http://javafx.com/fxml/1" prefHeight="720.0" prefWidth="1280.0"
             xmlns="http://javafx.com/javafx/11.0.1"
             fx:controller="dormitorymanagementsystem.controllers.AddResidentController">
-    <JFXDrawer fx:id="drawer" layoutY="46.0" prefHeight="669.0" prefWidth="75.8"/>
-    <GridPane fx:id="addGrid" gridLinesVisible="true" layoutX="186.0" layoutY="46.0" prefHeight="620.0"
-              prefWidth="882.0">
+    <JFXDrawer fx:id="drawer" layoutY="50.0" miniDrawerSize="100.0" prefHeight="669.0" prefWidth="100.0"/>
+    <GridPane fx:id="addGrid" layoutX="186.0" layoutY="46.0" prefHeight="620.0" prefWidth="882.0">
         <columnConstraints>
             <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" maxWidth="436.199951171875" minWidth="10.0"
                                prefWidth="140.600048828125"/>
@@ -20,19 +19,25 @@
                                minWidth="10.0" prefWidth="335.0000244140625"/>
         </columnConstraints>
         <rowConstraints>
-            <RowConstraints maxHeight="543.2" minHeight="10.0" percentHeight="14.28" prefHeight="75.60000457763672"
+            <RowConstraints maxHeight="543.2" minHeight="10.0" percentHeight="10" prefHeight="75.60000457763672"
                             valignment="CENTER"/>
-            <RowConstraints maxHeight="529.2000411987304" minHeight="0.0" percentHeight="14.28"
+            <RowConstraints maxHeight="529.2000411987304" minHeight="0.0" percentHeight="10"
                             prefHeight="87.19999999999999" valignment="CENTER"/>
-            <RowConstraints maxHeight="521.0000213623047" minHeight="0.0" percentHeight="14.28"
+            <RowConstraints maxHeight="521.0000213623047" minHeight="0.0" percentHeight="10"
                             prefHeight="82.20001831054688"/>
-            <RowConstraints maxHeight="530.6000122070312" minHeight="10.0" percentHeight="14.28"
+            <RowConstraints maxHeight="530.6000122070312" minHeight="10.0" percentHeight="10"
                             prefHeight="94.3999938964844"/>
-            <RowConstraints maxHeight="525.4000122070312" minHeight="10.0" percentHeight="14.28"
+            <RowConstraints maxHeight="525.4000122070312" minHeight="10.0" percentHeight="10"
                             prefHeight="92.0000061035156"/>
-            <RowConstraints maxHeight="492.79999389648435" minHeight="10.0" percentHeight="14.28"
+            <RowConstraints maxHeight="492.79999389648435" minHeight="10.0" percentHeight="10"
                             prefHeight="99.20002441406245"/>
-            <RowConstraints maxHeight="492.79999389648435" minHeight="10.0" percentHeight="14.28"
+            <RowConstraints maxHeight="492.79999389648435" minHeight="10.0" percentHeight="10"
+                            prefHeight="92.79997558593755"/>
+            <RowConstraints maxHeight="525.4000122070312" minHeight="10.0" percentHeight="10"
+                            prefHeight="92.0000061035156"/>
+            <RowConstraints maxHeight="492.79999389648435" minHeight="10.0" percentHeight="10"
+                            prefHeight="99.20002441406245"/>
+            <RowConstraints maxHeight="492.79999389648435" minHeight="10.0" percentHeight="10"
                             prefHeight="92.79997558593755"/>
         </rowConstraints>
         <Label alignment="CENTER" contentDisplay="CENTER" text="Imię:"/>
@@ -68,4 +73,6 @@
     </GridPane>
     <Button fx:id="addResident" layoutX="584.0" layoutY="679.0" mnemonicParsing="false" onMouseClicked="#addResident"
             prefHeight="26.0" prefWidth="86.0" text="Zakwateruj"/>
+    <Button layoutX="1161.0" layoutY="14.0" mnemonicParsing="false" onMouseClicked="#logout"
+            prefHeight="26.0" prefWidth="73.0" text="Logout"/>
 </AnchorPane>

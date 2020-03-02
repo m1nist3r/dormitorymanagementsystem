@@ -10,7 +10,7 @@ public class ResidentGuest extends Resident {
     private StringProperty isStudent;
     private StringProperty isPartTimeStudent;
 
-    ResidentGuest() {
+    public ResidentGuest() {
         super();
         this.isStudent = new SimpleStringProperty();
         this.isPartTimeStudent = new SimpleStringProperty();
@@ -20,7 +20,7 @@ public class ResidentGuest extends Resident {
         return isStudent.get();
     }
 
-    void setIsStudent(String isStudent) {
+    public void setIsStudent(String isStudent) {
         this.isStudent.set(isStudent);
     }
 
@@ -28,7 +28,7 @@ public class ResidentGuest extends Resident {
         return isPartTimeStudent.get();
     }
 
-    void setIsPartTimeStudent(String isPartTimeStudent) {
+    public void setIsPartTimeStudent(String isPartTimeStudent) {
         this.isPartTimeStudent.set(isPartTimeStudent);
     }
 

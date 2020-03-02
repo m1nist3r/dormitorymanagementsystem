@@ -28,7 +28,7 @@ public class ResidentStudent extends Resident {
         return studentNumber.get();
     }
 
-    void setStudentNumber(String studentNumber) {
+    public void setStudentNumber(String studentNumber) {
         this.studentNumber.set(studentNumber);
     }
 
@@ -36,7 +36,7 @@ public class ResidentStudent extends Resident {
         return department.get();
     }
 
-    void setDepartment(String department) {
+    public void setDepartment(String department) {
         this.department.set(department);
     }
 
@@ -45,7 +45,7 @@ public class ResidentStudent extends Resident {
         return yearOfStudy.get();
     }
 
-    void setYearOfStudy(String yearOfStudy) {
+    public void setYearOfStudy(String yearOfStudy) {
         this.yearOfStudy.set(yearOfStudy);
     }
 
@@ -53,7 +53,7 @@ public class ResidentStudent extends Resident {
         return academicYear.get();
     }
 
-    void setAcademicYear(String academicYear) {
+    public void setAcademicYear(String academicYear) {
         this.academicYear.set(academicYear);
     }
 
@@ -61,7 +61,7 @@ public class ResidentStudent extends Resident {
         return studentPaymentAccount.get();
     }
 
-    void setStudentPaymentAccount(String studentPaymentAccount) {
+    public void setStudentPaymentAccount(String studentPaymentAccount) {
         this.studentPaymentAccount.set(studentPaymentAccount);
     }
 

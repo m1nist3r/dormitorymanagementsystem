@@ -14,7 +14,7 @@ public class RoomDAO {
     @NotNull
     public static ObservableList<Room> searchRooms() throws SQLException {
         //Declare a SELECT statement
-        @Language("MySQL") String selectStmt = "SELECT * FROM room";
+        @Language("MySQL") String selectStmt = "SELECT * FROM room ORDER BY Resident_amount ";
         //Execute SELECT statement
         try {
             //Get ResultSet from dbExecuteQuery method
@@ -52,7 +52,7 @@ public class RoomDAO {
     @NotNull
     public static ObservableList<Room> searchFreeRoom() throws SQLException {
         //Declare a SELECT statement
-        @Language("MySQL") String selectStmt = "SELECT idRoom, Room_status FROM room WHERE Resident_amount < Room_type";
+        @Language("MySQL") String selectStmt = "SELECT idRoom, Room_status, Room_type, Resident_amount FROM room WHERE Resident_amount < Room_type";
         //Execute SELECT statement
         try {
             //Get ResultSet from dbExecuteQuery method
@@ -63,6 +63,8 @@ public class RoomDAO {
                 Room room = new Room();
                 room.setRoomId(rsRoom.getInt("IDROOM"));
                 room.setRoomStatus(rsRoom.getString("ROOM_STATUS"));
+                room.setRoomType(rsRoom.getInt("ROOM_TYPE"));
+                room.setResidentAmount(rsRoom.getInt("RESIDENT_AMOUNT"));
                 resList.add(room);
             }
             //Return room objectreturn
@@ -99,5 +101,37 @@ public class RoomDAO {
         room.setRemarks(rs.getString("REMARKS"));
 
         return room;
+    }
+
+    public static void updateRoom(int idRoom, int numRes, int room_type)
+            throws IndexOutOfBoundsException, SQLException {
+        String room_status;
+        switch (numRes) {
+            case 0:
+                room_status = "1 / " + room_type;
+                break;
+            case 1:
+                if (numRes > room_type)
+                    throw new IndexOutOfBoundsException("Wrong amount of resident for that type of room");
+                room_status = "2 /" + room_type;
+                break;
+            case 2:
+                if (numRes > room_type)
+                    throw new IndexOutOfBoundsException("Wrong amount of resident for that type of room");
+                room_status = "Full";
+                break;
+            default:
+                throw new IndexOutOfBoundsException("Max amount of residents");
+        }
+        @Language("MySQL") String updateStmt = "UPDATE room" +
+                " SET Resident_amount = Resident_amount + 1, Room_status ='" + room_status + "'" +
+                " WHERE idRoom = ?";
+
+        try {
+            DBUtil.dbExecutePreparedUpdate(updateStmt, idRoom);
+        } catch (SQLException e) {
+            System.out.print("Error occurred while UPDATE Operation: " + e);
+            throw e;
+        }
     }
 }

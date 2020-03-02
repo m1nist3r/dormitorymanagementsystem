@@ -10,7 +10,8 @@
                prefWidth="1100.0">
         <columns>
             <TableColumn fx:id="residentIdColumn" prefWidth="75.0" text="idResident" visible="false"/>
-            <TableColumn fx:id="residentIdTypeColumn" prefWidth="90.0" resizable="false" text="Resident Type"/>
+            <TableColumn fx:id="residentIdTypeColumn" prefWidth="90.0" resizable="false" text="Resident Type"
+                         visible="false"/>
             <TableColumn fx:id="residentIdRoomColumn" prefWidth="75.0" resizable="false" text="Room №"/>
             <TableColumn fx:id="residentNameColumn" prefWidth="100.0" resizable="false" text="Name"/>
             <TableColumn fx:id="residentLastNameColumn" prefWidth="100.0" resizable="false" text="Last Name"/>
@@ -39,5 +40,9 @@
     <Label layoutX="461.0" layoutY="15.0" text="Wyszukaj:"/>
     <Button layoutX="1144.0" layoutY="680.0" mnemonicParsing="false" onMouseClicked="#inspectResidentPopUp"
             prefHeight="26.0" prefWidth="90.0" text="Inspect"/>
-    <JFXDrawer fx:id="drawer" layoutY="50.0" prefHeight="669.0" prefWidth="75.8"/>
+    <JFXDrawer fx:id="drawer" layoutY="50.0" miniDrawerSize="100.0" prefHeight="669.0" prefWidth="75.8"/>
+    <Button layoutX="1160.0" layoutY="11.0" mnemonicParsing="false" onMouseClicked="#logout" prefHeight="26.0"
+            prefWidth="73.0" text="Logout"/>
+    <Button fx:id="addAdmin" layoutX="1054.0" layoutY="11.0" mnemonicParsing="false" onMouseClicked="#addAdmin"
+            prefHeight="26.0" prefWidth="90.0" visible="false" text="Add Admin"/>
 </AnchorPane>

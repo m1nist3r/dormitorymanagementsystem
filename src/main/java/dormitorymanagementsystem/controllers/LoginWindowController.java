@@ -14,6 +14,9 @@ import javafx.stage.Stage;
 import javafx.stage.Window;
 
 import java.io.IOException;
+import java.math.BigInteger;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.sql.SQLException;
 
 public class LoginWindowController {
@@ -56,24 +59,33 @@ public class LoginWindowController {
     private void loginActivity() throws SQLException, IOException {
         Window owner = loginImageView.getScene().getWindow();
         if (loginPesel.getText().isEmpty()) {
-            showAlert(owner,
-                    "Please enter your pesel");
+            showAlert(owner, "Please enter your PESEL");
+            return;
+        } else if (loginPassword.getText().isEmpty()) {
+            showAlert(owner, "Please enter a password");
             return;
         }
-        if (loginPassword.getText().isEmpty()) {
-            showAlert(owner,
-                    "Please enter a password");
-            return;
-        }
-
         String pesel = loginPesel.getText();
         String password = loginPassword.getText();
-        System.out.println(pesel + " " + password);
+        try {
+            MessageDigest md = MessageDigest.getInstance("MD5");
+            md.update(password.getBytes());
+            byte[] digest = md.digest();
+            BigInteger no = new BigInteger(1, digest);
+            String hashText = no.toString(16);
+            while (hashText.length() < 32) {
+                hashText = "0" + hashText;
+            }
+            password = hashText;
+            System.out.println(password);
+        } catch (NoSuchAlgorithmException e) {
+            e.printStackTrace();
+            return;
+        }
         Admin admin = AdminDAO.searchAdminByPesPas(pesel, password);
-        System.out.println(admin.getPesel());
         if (admin.getPesel() != null) {
             login(admin);
-        } else showAlert(owner, "Niepoprawne dane");
+        } else showAlert(owner, "Incorrect data");
     }
 
     private void login(Admin admin) throws IOException {
@@ -82,9 +94,10 @@ public class LoginWindowController {
         Parent root = loader.load();
         ResidentListController controller = loader.getController();
         controller.setPrimaryStage(primaryStage);
-        //controller.setAdmin(admin);
+        controller.setAdmin(admin);
         primaryStage.setHeight(760);
         primaryStage.setWidth(1280);
+        primaryStage.centerOnScreen();
         primaryStage.getScene().setRoot(root);
     }
 

@@ -12,12 +12,9 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 
 public class ResidentDAO {
-
-    //*******************************
-    //SELECT specific Residents (Search by First + Last name)
-    //*******************************
     @NotNull
-    public static ObservableList<Resident> searchResidents(String resFLName) throws SQLException {
+    public static ObservableList<Resident> searchResidents(String resFLName)
+            throws SQLException {
         //Declare a SELECT statement
         @Language("MySQL") String selectStmt = "SELECT * FROM resident WHERE first_name LIKE ? OR last_name LIKE ?";
 
@@ -36,11 +33,9 @@ public class ResidentDAO {
         }
     }
 
-    //*******************************
-    //SELECT specific Residents (Search by Id)
-    //*******************************
     @NotNull
-    public static <T extends Resident> ObservableList<T> searchResidentById(int id, int resident_type) throws SQLException {
+    public static <T extends Resident> ObservableList<T> searchResidentById(int id, int resident_type)
+            throws SQLException {
         //Declare a SELECT statement
         @Language("MySQL") String selectStmt = "SELECT r.*, t.Type, \n" +
                 "        GROUP_CONCAT(rv.value SEPARATOR ', ') as resident_detail_value\n" +
@@ -64,11 +59,9 @@ public class ResidentDAO {
         }
     }
 
-    //*******************************
-    //SELECT all Residents
-    //*******************************
     @NotNull
-    public static ObservableList<Resident> searchResidents() throws SQLException {
+    public static ObservableList<Resident> searchResidents()
+            throws SQLException {
         //Declare a SELECT statement
         @Language("MySQL") String selectStmt = "SELECT * FROM resident";
 
@@ -88,7 +81,8 @@ public class ResidentDAO {
     }
 
     @NotNull
-    private static <T extends Resident> T addResidentToObservableList(@NotNull Resident res, @NotNull ResultSet rs) throws SQLException {
+    private static <T extends Resident> T addResidentToObservableList(@NotNull Resident res, @NotNull ResultSet rs)
+            throws SQLException {
         res.setResidentId(rs.getInt("ID_RESIDENT"));
         res.setResidentTypeId(rs.getInt("ID_TYPE"));
         res.setResidentRoomId(rs.getInt("ID_ROOM"));
@@ -110,9 +104,9 @@ public class ResidentDAO {
         return ((T) res);
     }
 
-    //Use ResultSet from DB as parameter and set Resident Object's attributes and return resident object.
     @NotNull
-    private static ObservableList<Resident> getResidentList(@NotNull ResultSet rs) throws SQLException {
+    private static ObservableList<Resident> getResidentList(@NotNull ResultSet rs)
+            throws SQLException {
         //Declare a observable List which comprises of Resident objects
         ObservableList<Resident> resList = FXCollections.observableArrayList();
 
@@ -125,7 +119,33 @@ public class ResidentDAO {
     }
 
     @NotNull
-    private static <T> ObservableList<T> getResidentById(@NotNull ResultSet rs, int resident_type) throws SQLException {
+    public static Resident searchResidentById(int id)
+            throws SQLException {
+        //Declare a observable List which comprises of Resident objects
+        @Language("MySQL") String selectStmt = "SELECT * FROM resident WHERE id_resident = ?";
+        ObservableList<Resident> resList = FXCollections.observableArrayList();
+        Resident res = new Resident();
+        try {
+            //Get ResultSet from dbExecuteQuery method
+            ResultSet rsRes = DBUtil.dbExecutePreparedQuery(selectStmt, id);
+            //Send ResultSet to the getResidentFromResultSet method and get resident object
+            //Return resident object
+            Resident resident = new Resident();
+            rsRes.next();
+            addResidentToObservableList(resident, rsRes);
+            resident.setPayment_fee(rsRes.getDouble("PAYMENT_FEE"));
+            return resident;
+
+        } catch (SQLException e) {
+            System.out.println("While searching an residents an error occurred: " + e.getMessage());
+            //Return exception
+            throw e;
+        }
+    }
+
+    @NotNull
+    private static <T> ObservableList<T> getResidentById(@NotNull ResultSet rs, int resident_type)
+            throws SQLException {
         //Declare a observable List which comprises of Resident objects
         ObservableList<T> resList = FXCollections.observableArrayList();
         switch (resident_type) {
@@ -138,7 +158,7 @@ public class ResidentDAO {
                     res.setYearOfStudy(subStr[2]);
                     res.setAcademicYear(subStr[3]);
                     res.setStudentPaymentAccount(subStr[4]);
-
+                    res.setPayment_fee(rs.getDouble("PAYMENT_FEE"));
                     //Add resident to the ObservableList
                     resList.add((T) addResidentToObservableList(res, rs));
                 }
@@ -184,7 +204,8 @@ public class ResidentDAO {
     }
 
     @NotNull
-    public static ObservableList<Pair<Integer, String>> getResidentTypes() throws SQLException {
+    public static ObservableList<Pair<Integer, String>> getResidentTypes()
+            throws SQLException {
         //Declare a SELECT statement
         @Language("MySQL") String selectStmt = "SELECT idType, Type FROM type_of_resident";
 
@@ -207,33 +228,8 @@ public class ResidentDAO {
         }
     }
 
-    public static ObservableList<String> getResidentFields(int resident_type) throws SQLException {
-        //Declare a SELECT statement
-        @Language("MySQL") String selectStmt = "SELECT field_name FROM resident_type_fields WHERE  idType = ?";
-
-        //Execute SELECT statement
-        try {
-            //Get ResultSet from dbExecuteQuery method
-            ResultSet rsRes = DBUtil.dbExecutePreparedQuery(selectStmt, resident_type);
-
-            ObservableList<String> fieldsName = FXCollections.observableArrayList();
-
-            while (rsRes.next()) {
-                fieldsName.add(rsRes.getString("FIELD_NAME"));
-            }
-            //Return resident object
-            return fieldsName;
-        } catch (SQLException e) {
-            System.out.println("While searching an residents an error occurred: " + e);
-            //Return exception
-            throw e;
-        }
-    }
-
-    //*************************************
-    //UPDATE a resident's details
-    //*************************************
-    public static void updateResident(int resId, int residentTypeId, int columnNameId, String newValue) throws SQLException {
+    public static boolean updateResident(int resId, int residentTypeId, int columnNameId, String newValue)
+            throws SQLException {
         ArrayList<String> arrayList;
         String columnName;
         @Language("MySQL") String updateStmt;
@@ -257,35 +253,94 @@ public class ResidentDAO {
         columnName = arrayList.get(columnNameId);
         if (columnNameId < 17) {
             //Declare a UPDATE statement
-            updateStmt = "UPDATE resident SET " + columnName + " = " + newValue + "  WHERE id_resident = ? ";
+            updateStmt = "UPDATE resident SET " + columnName + " = '" + newValue + "'  WHERE id_resident = ? ";
             //Execute UPDATE operation
             try {
                 DBUtil.dbExecutePreparedUpdate(updateStmt, resId);
+                return true;
             } catch (SQLException e) {
                 System.out.print("Error occurred while UPDATE Operation: " + e);
-                throw e;
+                return false;
             }
         } else {
 
             updateStmt =
                     "UPDATE resident_values_fields AS rvf " +
                             "INNER JOIN resident_type_fields rtf ON rvf.idField = rtf.idField " +
-                            "SET rvf.value = " + newValue +
+                            "SET rvf.value = 91956" +
                             " WHERE rvf.idResident = ? AND rtf.field_name = ?";
             //Execute UPDATE operation
             try {
                 DBUtil.dbExecutePreparedUpdate(updateStmt, resId, columnName);
+                return true;
             } catch (SQLException e) {
                 System.out.print("Error occurred while UPDATE Operation: " + e);
-                throw e;
+                return false;
             }
         }
-
     }
 
-    //*************************************
-    //DELETE a resident
-    //*************************************
+    public static void insertResident(Resident res)
+            throws SQLException {
+        //Declare a INSERT statement
+        @Language("MySQL") String insertResAddStmt = "";
+        @Language("MySQL") String insertResidentStmt = "INSERT INTO `resident`(`id_resident`, `id_type`, `id_room`, `first_name`," +
+                " `last_name`, `pesel`, `gender`, `dob`, `mothers_name`, `fathers_name`, `email`, `country`, `address`," +
+                " `phone_number`, `accommodation_date`, `eviction_date`, `is_blocked`)" +
+                " VALUES (null, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, current_timestamp, ?, 0);";
+        if (res instanceof ResidentStudent) {
+            insertResAddStmt = " INSERT INTO `resident_values_fields`(`idValue`, `idField`, `idResident`, `value`)" +
+                    " VALUES (null, 1, (SELECT id_resident FROM resident ORDER BY id_resident DESC LIMIT 1), ?)," +
+                    " (null, 2, (SELECT id_resident FROM resident ORDER BY id_resident DESC LIMIT 1), ?)," +
+                    " (null, 3, (SELECT id_resident FROM resident ORDER BY id_resident DESC LIMIT 1), ?)," +
+                    " (null, 4, (SELECT id_resident FROM resident ORDER BY id_resident DESC LIMIT 1), ?)," +
+                    " (null, 5, (SELECT id_resident FROM resident ORDER BY id_resident DESC LIMIT 1), ?);";
+        } else if (res instanceof ResidentErasmus) {
+            insertResAddStmt = " INSERT INTO `resident_values_fields`(`idValue`, `idField`, `idResident`, `value`)" +
+                    " VALUES (null, 6, (SELECT id_resident FROM resident ORDER BY id_resident DESC LIMIT 1), ?)," +
+                    " (null, 7, (SELECT id_resident FROM resident ORDER BY id_resident DESC LIMIT 1), ?);";
+        } else if (res instanceof ResidentForeignStudent) {
+            insertResAddStmt = " INSERT INTO `resident_values_fields`(`idValue`, `idField`, `idResident`, `value`)" +
+                    " VALUES (null, 8, (SELECT id_resident FROM resident ORDER BY id_resident DESC LIMIT 1), ?);";
+        } else if (res instanceof ResidentGuest) {
+            insertResAddStmt = "INSERT INTO `resident_values_fields`(`idValue`, `idField`, `idResident`, `value`)" +
+                    " VALUES (null, 9, (SELECT id_resident FROM resident ORDER BY id_resident DESC LIMIT 1), ?)," +
+                    " (null, 10, (SELECT id_resident FROM resident ORDER BY id_resident DESC LIMIT 1), ?);";
+        }
+        //Execute INSERT operation
+        try {
+            DBUtil.dbExecutePreparedResidentInsert(insertResidentStmt, insertResAddStmt, res);
+        } catch (SQLException e) {
+            System.out.print("Error occurred while INSERT Operation: " + e);
+            throw e;
+        }
+    }
+
+
+    @NotNull
+    public static ObservableList<String> getResidentFields(int resident_type) throws SQLException {
+        //Declare a SELECT statement
+        @Language("MySQL") String selectStmt = "SELECT field_name FROM resident_type_fields WHERE  idType = ?";
+
+        //Execute SELECT statement
+        try {
+            //Get ResultSet from dbExecuteQuery method
+            ResultSet rsRes = DBUtil.dbExecutePreparedQuery(selectStmt, resident_type);
+
+            ObservableList<String> fieldsName = FXCollections.observableArrayList();
+
+            while (rsRes.next()) {
+                fieldsName.add(rsRes.getString("FIELD_NAME"));
+            }
+            //Return resident object
+            return fieldsName;
+        } catch (SQLException e) {
+            System.out.println("While searching an residents an error occurred: " + e);
+            //Return exception
+            throw e;
+        }
+    }
+
     public static void deleteResWithId(String resId) throws SQLException {
         //Declare a DELETE statement
         @Language("MySQL") String updateStmt = "DELETE FROM resident WHERE id_resident = ?";
@@ -294,24 +349,6 @@ public class ResidentDAO {
             DBUtil.dbExecutePreparedQuery(updateStmt, resId);
         } catch (SQLException e) {
             System.out.print("Error occurred while DELETE Operation: " + e);
-            throw e;
-        }
-    }
-
-    //*************************************
-    //INSERT a resident
-    //*************************************
-    public static void insertResident(Resident res) throws SQLException {
-        //Declare a DELETE statement
-        @Language("MySQL") String updateStmt = "INSERT INTO `resident`(`id_resident`, `id_type`, `id_room`, `first_name`," +
-                " `last_name`, `pesel`, `gender`, `dob`, `mothers_name`, `fathers_name`, `email`, `country`, `address`," +
-                " `phone_number`, `accommodation_date`, `eviction_date`, `is_blocked`)" +
-                " VALUES (null, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, current_timestamp, ?, 0)";
-        //Execute UPDATE operation
-        try {
-            DBUtil.dbExecutePreparedInsert(updateStmt, res);
-        } catch (SQLException e) {
-            System.out.print("Error occurred while INSERT Operation: " + e);
             throw e;
         }
     }

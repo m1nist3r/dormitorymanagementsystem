@@ -24,10 +24,9 @@ public class Resident {
     private StringProperty address;
     private StringProperty phoneNumber;
     private SimpleObjectProperty<Date> accommodationDate;
+    private DoubleProperty payment_fee;
     private SimpleObjectProperty<Date> evictionDate;
     private BooleanProperty isBlocked;
-    //endregion
-
     //Constructor
     public Resident() {
         this.residentId = new SimpleIntegerProperty();
@@ -47,9 +46,17 @@ public class Resident {
         this.accommodationDate = new SimpleObjectProperty<>();
         this.evictionDate = new SimpleObjectProperty<>();
         this.isBlocked = new SimpleBooleanProperty();
+        this.payment_fee = new SimpleDoubleProperty();
+    }
+    //endregion
+
+    @Override
+    public String toString() {
+        return firstName.getValue() + " " + lastName.getValue() + " " + pesel.getValue() + " " + residentId.getValue();
     }
 
     //region Getters And Setters For Resident
+
     //resident_id
     public String getResidentTypeId() {
         return String.valueOf(residentTypeId.get());
@@ -278,8 +285,20 @@ public class Resident {
         list.addAll(this.getResidentId(), this.getResidentTypeId(), this.getResidentRoomId(), this.getFirstName(),
                 this.getLastName(), this.getPesel(), this.getGender(), this.getDobDate(), this.getMotherName(),
                 this.getFatherName(), this.getEmail(), this.getCountry(), this.getAddress(), this.getPhoneNumber(),
-                this.getAccommodationDate(), this.getEvictionDate(), this.getIsBlocked());
+                this.getAccommodationDate(), this.getEvictionDate(), this.getIsBlocked(), this.getPayment_fee());
         return list;
+    }
+
+    public String getPayment_fee() {
+        return String.valueOf(payment_fee.get());
+    }
+
+    public void setPayment_fee(double payment_fee) {
+        this.payment_fee.set(payment_fee);
+    }
+
+    public DoubleProperty payment_feeProperty() {
+        return payment_fee;
     }
     //endregion
 

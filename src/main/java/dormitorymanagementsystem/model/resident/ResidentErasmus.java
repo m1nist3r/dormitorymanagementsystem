@@ -10,7 +10,7 @@ public class ResidentErasmus extends Resident {
     private StringProperty originUniversity;
     private StringProperty erasmusNumber;
 
-    ResidentErasmus() {
+    public ResidentErasmus() {
         super();
         this.originUniversity = new SimpleStringProperty();
         this.erasmusNumber = new SimpleStringProperty();
@@ -20,7 +20,7 @@ public class ResidentErasmus extends Resident {
         return originUniversity.get();
     }
 
-    void setOriginUniversity(String originUniversity) {
+    public void setOriginUniversity(String originUniversity) {
         this.originUniversity.set(originUniversity);
     }
 
@@ -28,7 +28,7 @@ public class ResidentErasmus extends Resident {
         return erasmusNumber.get();
     }
 
-    void setErasmusNumber(String erasmusNumber) {
+    public void setErasmusNumber(String erasmusNumber) {
         this.erasmusNumber.set(erasmusNumber);
     }
 

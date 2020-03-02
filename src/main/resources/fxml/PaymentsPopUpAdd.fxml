@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<AnchorPane xmlns:fx="http://javafx.com/fxml/1" prefHeight="400.0" prefWidth="600.0"
+            xmlns="http://javafx.com/javafx/11.0.1"
+            fx:controller="dormitorymanagementsystem.controllers.PaymentsPopUpAddController">
+    <GridPane alignment="CENTER_LEFT" layoutX="120.0" layoutY="14.0" prefHeight="340.0" prefWidth="358.0">
+        <columnConstraints>
+            <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" maxWidth="174.20001220703125" minWidth="10.0"
+                               prefWidth="120.5999755859375"/>
+            <ColumnConstraints fillWidth="false" halignment="CENTER" hgrow="SOMETIMES" maxWidth="237.4000244140625"
+                               minWidth="10.0" prefWidth="237.4000244140625"/>
+        </columnConstraints>
+        <rowConstraints>
+            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES"/>
+            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES"/>
+            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES"/>
+        </rowConstraints>
+        <Label text="Mieszkanieć:"/>
+        <Label text="Kwota:" GridPane.rowIndex="1"/>
+        <Label text="Typ opłaty:" GridPane.rowIndex="2"/>
+        <ComboBox fx:id="paymentResidentComboBox" editable="true" onAction="#paymentResidentChange"
+                  prefHeight="26.0" prefWidth="200.0" stylesheets="@../css/PaymentPopUpAdd.css"
+                  GridPane.columnIndex="1"/>
+        <ComboBox fx:id="paymentAmountComboBox" editable="true" prefHeight="26.0" prefWidth="200.0"
+                  GridPane.columnIndex="1" GridPane.rowIndex="1"/>
+        <TextField fx:id="paymentTypeTextField" prefHeight="26.0" prefWidth="200.0" GridPane.columnIndex="1"
+                   GridPane.rowIndex="2"/>
+    </GridPane>
+    <Button layoutX="207.0" layoutY="353.0" mnemonicParsing="false" onMouseClicked="#paymentConfirm"
+            text="Wprowadź"/>
+    <Button layoutX="320.0" layoutY="353.0" mnemonicParsing="false" onMouseClicked="#paymentClose" prefHeight="26.0"
+            prefWidth="73.0" text="Close"/>
+</AnchorPane>

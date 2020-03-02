@@ -1,7 +1,7 @@
 package dormitorymanagementsystem.controllers;
 
 import com.jfoenix.controls.JFXDrawer;
-import com.jfoenix.controls.JFXHamburger;
+import dormitorymanagementsystem.model.admin.Admin;
 import dormitorymanagementsystem.model.resident.Resident;
 import dormitorymanagementsystem.model.resident.ResidentDAO;
 import dormitorymanagementsystem.util.SidePanelInstance;
@@ -11,18 +11,22 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Button;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
+import javafx.scene.input.MouseEvent;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
+import javafx.stage.WindowEvent;
 
 import java.io.IOException;
 import java.sql.SQLException;
 import java.util.Date;
 
 public class ResidentListController {
-
+    @FXML
+    private Button addAdmin;
     //region TableView and TableColumn components
     @FXML
     private TableView<Resident> residentTable;
@@ -58,24 +62,101 @@ public class ResidentListController {
     private TableColumn<Resident, Date> residentAccommodationColumn;
     @FXML
     private TableColumn<Resident, Date> residentEvictionDateColumn;
-    //endregion
-
     @FXML
     private TableColumn<Resident, Boolean> residentIsBlockedColumn;
+    //endregion
+
     @FXML
     private TextField searchField;
     @FXML
     private JFXDrawer drawer;
-    @FXML
-    private JFXHamburger menuHamburger;
 
     private Stage primaryStage;
+    private Admin admin;
 
-    void setPrimaryStage(Stage primaryStage) {
-        this.primaryStage = primaryStage;
+    @FXML
+    private void initialize() {
+        //Wait a momment then run
+        Platform.runLater(() -> {
+            //Initialization of side panel
+            SidePanelInstance sidePanelInstance = new SidePanelInstance(drawer, primaryStage, admin);
+            sidePanelInstance.sidePanelInit();
+            if (admin.getIdAdminType() == 2) {
+                addAdmin.setVisible(true);
+            }
+            //Setting TableView
+            settingTableView();
+
+            //Searchinf for Resident
+            try {
+                searchResidents();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        });
     }
 
-    //Search an resident
+    @FXML
+    private void populateResidents(ObservableList<Resident> resData) {
+        //Set items to the residentTable
+        residentTable.setItems(resData);
+    }
+
+    @FXML
+    public void inspectResidentPopUp() {
+        Resident tablePopUpSelectionModel = residentTable
+                .getSelectionModel()
+                .getSelectedItem();
+        int residentId = Integer.parseInt(tablePopUpSelectionModel.getResidentId());
+        int residentTypeId = Integer.parseInt(tablePopUpSelectionModel.getResidentTypeId());
+        String viewPath = "/fxml/ResidentPopUpDetails.fxml";
+        String titlePopUp = "Resident details: " +
+                residentTable
+                        .getSelectionModel()
+                        .getSelectedItem()
+                        .getFirstName() + " " +
+                residentTable
+                        .getSelectionModel()
+                        .getSelectedItem()
+                        .getLastName();
+        createAndShowPopUp(viewPath, titlePopUp, residentId, residentTypeId);
+    }
+
+    private void createAndShowPopUp(String view, String title, int residentId, int residentTypeId) {
+        try {
+            // Loader
+            FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource(view));
+            Parent root1 = fxmlLoader.load();
+            Stage stage = new Stage();
+            stage.initModality(Modality.APPLICATION_MODAL);
+            stage.setTitle(title);
+            stage.setScene(new Scene(root1));
+            ResidentPopUpController controller = fxmlLoader.getController();
+            controller.setStage(stage);
+            controller.setResidentId(residentId);
+            controller.setResidentTypeId(residentTypeId);
+
+            stage.getScene().getWindow().addEventHandler(WindowEvent.WINDOW_CLOSE_REQUEST, e -> {
+                try {
+                    searchResidents();
+                } catch (SQLException ex) {
+                    ex.printStackTrace();
+                }
+            });
+            stage.show();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    @FXML
+    public void searchForResident() throws SQLException {
+        cleanTable();
+        if (!searchField.getText().equals(""))
+            searchResident(searchField.getText());
+        else searchResidents();
+    }
+
     @FXML
     private void searchResident(String searched) throws SQLException {
         try {
@@ -90,7 +171,6 @@ public class ResidentListController {
         }
     }
 
-    //Search all residents
     private void searchResidents() throws SQLException {
         try {
             //Get all Residents information
@@ -101,27 +181,6 @@ public class ResidentListController {
             System.out.println("Error occurred while getting residents information from DB.\n" + e.getMessage());
             throw e;
         }
-    }
-
-    //Initiazlization of view before displaying
-    @FXML
-    private void initialize() {
-        //Wait a momment then run
-        Platform.runLater(() -> {
-            //Initialization of side panel and open menu button
-            SidePanelInstance sidePanelInstance = new SidePanelInstance(drawer, menuHamburger, primaryStage);
-            sidePanelInstance.sidePanelInit();
-
-            //Setting TableView
-            settingTableView();
-
-            //Searchinf for Resident
-            try {
-                searchResidents();
-            } catch (SQLException e) {
-                e.printStackTrace();
-            }
-        });
     }
 
     private void settingTableView() {
@@ -149,66 +208,51 @@ public class ResidentListController {
         residentTable.getColumns().forEach(column -> column.setReorderable(false));
     }
 
-    //Method of creation and showing detailed information of resident
-    private void createAndShowPopUp(String view, String title, int residentId, int residentTypeId) {
+    private void cleanTable() {
+        residentTable.getItems().clear();
+    }
+
+    public void setAdmin(Admin admin) {
+        this.admin = admin;
+    }
+
+    void setPrimaryStage(Stage primaryStage) {
+        this.primaryStage = primaryStage;
+    }
+
+    public void logout(MouseEvent mouseEvent) throws IOException {
+        admin = null;
+        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/fxml/LoginWindow.fxml"));
+        Parent root = fxmlLoader.load();
+        LoginWindowController controller = fxmlLoader.getController();
+        controller.setPrimaryStage(primaryStage);
+        primaryStage.setTitle("Dormitory management system");
+        primaryStage.setScene(new Scene(root));
+        primaryStage.setResizable(false);
+        primaryStage.setHeight(400);
+        primaryStage.setWidth(600);
+        primaryStage.centerOnScreen();
+        primaryStage.show();
+    }
+
+
+    public void addAdmin() {
         try {
             // Loader
-            FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource(view));
+            FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/fxml/addAdmin.fxml"));
             Parent root1 = fxmlLoader.load();
             Stage stage = new Stage();
             stage.initModality(Modality.APPLICATION_MODAL);
-            stage.setTitle(title);
+            stage.setTitle("Add Admin");
             stage.setScene(new Scene(root1));
-            ResidentPopUpController controller = fxmlLoader.getController();
+            stage.getScene().getStylesheets().add(
+                    getClass().getResource("/css/error.css").toExternalForm());
+            AddAdminController controller = fxmlLoader.getController();
             controller.setStage(stage);
-            controller.setResidentId(residentId);
-            controller.setResidentTypeId(residentTypeId);
 
             stage.show();
         } catch (IOException e) {
             e.printStackTrace();
         }
-    }
-
-    //Show detailed information of Resident
-    @FXML
-    public void inspectResidentPopUp() {
-        Resident tablePopUpSelectionModel = residentTable
-                .getSelectionModel()
-                .getSelectedItem();
-        int residentId = Integer.parseInt(tablePopUpSelectionModel.getResidentId());
-        int residentTypeId = Integer.parseInt(tablePopUpSelectionModel.getResidentTypeId());
-        String viewPath = "/fxml/ResidentPopUpDetails.fxml";
-        String titlePopUp = "Resident details: " +
-                residentTable
-                        .getSelectionModel()
-                        .getSelectedItem()
-                        .getFirstName() + " " +
-                residentTable
-                        .getSelectionModel()
-                        .getSelectedItem()
-                        .getLastName();
-        createAndShowPopUp(viewPath, titlePopUp, residentId, residentTypeId);
-    }
-
-    //Searching for Resident by Name/Surname
-    @FXML
-    public void searchForResident() throws SQLException {
-        cleanTable();
-        if (!searchField.getText().equals(""))
-            searchResident(searchField.getText());
-        else searchResidents();
-    }
-
-    //Populate Residents for TableView
-    @FXML
-    private void populateResidents(ObservableList<Resident> resData) {
-        //Set items to the residentTable
-        residentTable.setItems(resData);
-    }
-
-    //Clean Resident table
-    private void cleanTable() {
-        residentTable.getItems().clear();
     }
 }

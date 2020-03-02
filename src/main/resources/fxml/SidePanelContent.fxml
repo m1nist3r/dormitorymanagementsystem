@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.*?>
 <?import javafx.scene.layout.VBox?>
 <VBox xmlns:fx="http://javafx.com/fxml/1" alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity"
       minHeight="-Infinity" minWidth="-Infinity" prefHeight="690.0" prefWidth="100.0" spacing="50.0"
@@ -18,8 +18,14 @@
             onMouseClicked="#showListOfRooms" prefHeight="50.0" prefWidth="85.0"
             style="-fx-background-color: lightgray; -fx-border-style: solid solid solid; -fx-border-color: silver;"
             text="Room List" textAlignment="CENTER" wrapText="true"/>
-    <!-- <Button fx:id="paymentDetailsList" contentDisplay="TOP" graphicTextGap="1.0" mnemonicParsing="false" onMouseClicked="#showPayments" prefHeight="50.0" prefWidth="85.0" style="-fx-background-color: lightgray; -fx-border-style: solid solid solid; -fx-border-color: silver;" text="Payments" textAlignment="CENTER" wrapText="true" />
-     <Button fx:id="archiveListButton" contentDisplay="TOP" graphicTextGap="1.0" mnemonicParsing="false" onMouseClicked="#showArchive" prefHeight="50.0" prefWidth="85.0" style="-fx-background-color: lightgray; -fx-border-style: solid solid solid; -fx-border-color: silver;" text="Archive" textAlignment="CENTER" wrapText="true" />
-     <Button fx:id="settingsListButton" contentDisplay="TOP" graphicTextGap="1.0" mnemonicParsing="false" onMouseClicked="#showSettings" prefHeight="50.0" prefWidth="85.0" style="-fx-background-color: lightgray; -fx-border-style: solid solid solid; -fx-border-color: silver;" text="Settings" textAlignment="CENTER" wrapText="true" />
- -->
+    <Button fx:id="paymentDetailsList" contentDisplay="TOP" graphicTextGap="1.0" mnemonicParsing="false"
+            onMouseClicked="#showPayments" prefHeight="50.0" prefWidth="85.0"
+            style="-fx-background-color: lightgray; -fx-border-style: solid solid solid; -fx-border-color: silver;"
+            text="Payments" textAlignment="CENTER" wrapText="true"/>
+    <Button fx:id="archiveListButton" contentDisplay="TOP" graphicTextGap="1.0" mnemonicParsing="false"
+            onMouseClicked="#showArchive" prefHeight="50.0" prefWidth="85.0"
+            style="-fx-background-color: lightgray; -fx-border-style: solid solid solid; -fx-border-color: silver;"
+            text="Archive" textAlignment="CENTER" wrapText="true"/>
+    <!--<Button fx:id="settingsListButton" contentDisplay="TOP" graphicTextGap="1.0" mnemonicParsing="false" onMouseClicked="#showSettings" prefHeight="50.0" prefWidth="85.0" style="-fx-background-color: lightgray; -fx-border-style: solid solid solid; -fx-border-color: silver;" text="Settings" textAlignment="CENTER" wrapText="true" />
+-->
 </VBox>

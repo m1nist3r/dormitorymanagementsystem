@@ -4,12 +4,12 @@ import dormitorymanagementsystem.model.resident.Resident;
 import dormitorymanagementsystem.model.resident.ResidentDAO;
 import javafx.application.Platform;
 import javafx.collections.ObservableList;
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.TextFieldListCell;
 import javafx.stage.Stage;
+import javafx.stage.WindowEvent;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -18,13 +18,13 @@ import java.util.Objects;
 
 public class ResidentPopUpController {
 
-    private Stage stage;
+    @FXML
+    public CheckBox resEditCheckBox;
     @FXML
     private ListView<String> popUpListViewKey;
     @FXML
     private ListView<String> popUpListViewField;
-    @FXML
-    public CheckBox resEditCheckBox;
+    private Stage stage;
     private int residentId;
     private int residentTypeId;
     private ObservableList<String> residentObservableList;
@@ -70,6 +70,7 @@ public class ResidentPopUpController {
         popUpListViewField.getItems().add("Data zakwaterowania: ");
         popUpListViewField.getItems().add("Data wykwaterowania: ");
         popUpListViewField.getItems().add("Zbanowany: ");
+        popUpListViewField.getItems().add("Stan konta: ");
         switch (residentTypeId) {
             case 1: {
                 popUpListViewField.getItems().add("Numer legitymacji: ");
@@ -86,13 +87,40 @@ public class ResidentPopUpController {
             }  // Student ERASMUS
             case 3: {
                 popUpListViewField.getItems().add("Uczelnia macierzysta: ");
+                break;
             }  // Other Student
             case 4: {
                 popUpListViewField.getItems().add("Student: ");
                 popUpListViewField.getItems().add("Tryb studiów: ");
+                break;
             }  // Guests
         }
         popUpListViewField.setFocusTraversable(false);
+    }
+
+    public void resEditCancel(@NotNull ListView.EditEvent<String> stringEditEvent) {
+    }
+
+    public void resEditCommit(@NotNull ListView.EditEvent<String> stringEditEvent) throws SQLException {
+
+        Alert alert = new Alert(Alert.AlertType.NONE, "Edytować ?", ButtonType.YES, ButtonType.NO);
+        alert.showAndWait();
+        if (alert.getResult() == ButtonType.YES) {
+            residentObservableList.set(stringEditEvent.getIndex(), stringEditEvent.getNewValue());
+            int columnIndex = stringEditEvent.getIndex();
+            ResidentDAO.updateResident(residentId, residentTypeId, columnIndex, stringEditEvent.getNewValue());
+        }
+    }
+
+    public void resEditStart(ListView.EditEvent<String> stringEditEvent) {
+    }
+
+    public void editIsSelected() {
+        if (resEditCheckBox.isSelected()) {
+            popUpListViewKey.setEditable(true);
+        } else if (!resEditCheckBox.isSelected()) {
+            popUpListViewKey.setEditable(false);
+        }
     }
 
     @Nullable
@@ -132,7 +160,7 @@ public class ResidentPopUpController {
 
     @FXML
     private void closePopUpDetails() {
-        stage.close();
+        stage.getScene().getWindow().fireEvent(new WindowEvent(stage.getScene().getWindow(), WindowEvent.WINDOW_CLOSE_REQUEST));
     }
 
     void setStage(Stage stage) {
@@ -147,27 +175,8 @@ public class ResidentPopUpController {
         this.residentTypeId = residentTypeId;
     }
 
-    public void resEditCancel(@NotNull ListView.EditEvent<String> stringEditEvent) {
+    private boolean validate(String value, int indexColumn) {
+        return true;
     }
 
-    public void resEditCommit(@NotNull ListView.EditEvent<String> stringEditEvent) throws SQLException {
-        Alert alert = new Alert(Alert.AlertType.NONE, "Edytować ?", ButtonType.YES, ButtonType.NO);
-        alert.showAndWait();
-        if (alert.getResult() == ButtonType.YES) {
-            residentObservableList.set(stringEditEvent.getIndex(), stringEditEvent.getNewValue());
-            int columnIndex = stringEditEvent.getIndex();
-            ResidentDAO.updateResident(residentId, residentTypeId, columnIndex, stringEditEvent.getNewValue());
-        }
-    }
-
-    public void resEditStart(ListView.EditEvent<String> stringEditEvent) {
-    }
-
-    public void editIsSelected(ActionEvent event) {
-        if (resEditCheckBox.isSelected()) {
-            popUpListViewKey.setEditable(true);
-        } else if (!resEditCheckBox.isSelected()) {
-            popUpListViewKey.setEditable(false);
-        }
-    }
 }

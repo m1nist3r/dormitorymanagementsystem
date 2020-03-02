@@ -1,9 +1,9 @@
 <component name="ArtifactManager">
-  <artifact type="javafx" build-on-make="true" name="JavaFxApplication">
+  <artifact type="javafx" name="JavaFxApplication">
     <output-path>$PROJECT_DIR$/out/artifacts/JavaFxApplication</output-path>
     <properties id="javafx-properties">
       <options>
-        <option name="appClass" value="dormitorymanagemantsystem.Main" />
+        <option name="appClass" value="dormitorymanagementsystem.Main" />
         <option name="description" value="" />
         <option name="htmlPlaceholderId" value="" />
         <option name="title" value="" />
@@ -14,7 +14,6 @@
     <root id="root">
       <element id="archive" name="JavaFxApplication.jar">
         <element id="module-output" name="JavaFxApplication" />
-        <element id="module-source" name="JavaFxApplication" />
       </element>
     </root>
   </artifact>

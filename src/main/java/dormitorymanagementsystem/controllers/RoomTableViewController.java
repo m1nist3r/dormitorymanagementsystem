@@ -1,13 +1,16 @@
 package dormitorymanagementsystem.controllers;
 
 import com.jfoenix.controls.JFXDrawer;
-import com.jfoenix.controls.JFXHamburger;
+import dormitorymanagementsystem.model.admin.Admin;
 import dormitorymanagementsystem.model.room.Room;
 import dormitorymanagementsystem.model.room.RoomDAO;
 import dormitorymanagementsystem.util.SidePanelInstance;
 import javafx.application.Platform;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
@@ -15,15 +18,13 @@ import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 import javafx.stage.Window;
 
+import java.io.IOException;
 import java.sql.SQLException;
 
 public class RoomTableViewController {
 
-    static boolean is_Active = false;
     @FXML
     public JFXDrawer drawer;
-    @FXML
-    public JFXHamburger menuHamburger;
     @FXML
     public TextField searchField;
     @FXML
@@ -36,6 +37,7 @@ public class RoomTableViewController {
     public TableColumn<Room, String> tableColumnRoomStatus;
     public TableColumn<Room, Integer> tableColumnResidentNumber;
     private Stage primaryStage;
+    private Admin admin;
 
     private static void showAlert(Window owner, String message) {
         Alert alert = new Alert(Alert.AlertType.ERROR);
@@ -51,7 +53,7 @@ public class RoomTableViewController {
         //Wait a momment then run
         Platform.runLater(() -> {
             //Initialization of side panel and open menu button
-            SidePanelInstance sidePanelInstance = new SidePanelInstance(drawer, menuHamburger, primaryStage);
+            SidePanelInstance sidePanelInstance = new SidePanelInstance(drawer, primaryStage, admin);
             sidePanelInstance.sidePanelInit();
             //sidePanelInstance.setUpHamburger();
 
@@ -136,5 +138,24 @@ public class RoomTableViewController {
 
     public void setPrimaryStage(Stage primaryStage) {
         this.primaryStage = primaryStage;
+    }
+
+    public void logout() throws IOException {
+        admin = null;
+        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/fxml/LoginWindow.fxml"));
+        Parent root = fxmlLoader.load();
+        LoginWindowController controller = fxmlLoader.getController();
+        controller.setPrimaryStage(primaryStage);
+        primaryStage.setTitle("Dormitory management system");
+        primaryStage.setScene(new Scene(root));
+        primaryStage.setResizable(false);
+        primaryStage.setHeight(400);
+        primaryStage.setWidth(600);
+        primaryStage.centerOnScreen();
+        primaryStage.show();
+    }
+
+    public void setAdmin(Admin admin) {
+        this.admin = admin;
     }
 }
